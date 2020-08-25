@@ -1,0 +1,216 @@
+#
+# Be aware that even a small syntax error here can lead to failures in output.
+#
+
+sidebar:
+    about: False # set to False or comment line if you want to remove the "how to use?" in the sidebar
+    education: False # set to False if you want education in main section instead of in sidebar
+
+    # Profile information
+    name: Damiano Giusti
+    tagline: Mobile Software Engineer
+    avatar: https://www.gravatar.com/avatar/b7800707f9d6d9e1c053512554a5512f?s=500&d=mm&r=x
+
+    # Sidebar links
+    email: 
+    phone:
+    website: #do not add http://
+    linkedin: damianogiusti
+    github: damianogiusti
+    telegram: # add your nickname without '@' sign
+    gitlab:
+    bitbucket:
+    twitter: '@damianogiusti'
+    stack-overflow: # Number/Username, e.g. 123456/alandoe
+    codewars:
+    goodreads: # Number-Username, e.g. 123456-alandoe
+    spotify: damiano.giusti
+
+    languages:
+      # - idiom: English
+      #   level: Professional
+
+    interests:
+      # - item: I play the guitar
+      #   link: meh
+
+      # - item: I write code
+      #   link:
+
+career-profile:
+    title: About me
+    summary: |
+      I am a Software Engineer who loves everything about the mobile apps world.
+      I have been developing apps for the Android platform since 2013. 
+      I care a lot about software architectures, testing and clean code. 
+      Moreover, I aim to deliver to end users smooth and fine-tuned apps, for the best possible 
+      user experience. I am curious and passionate about what I do, and I always try to get 
+      the most out of new challenges, to improve myself as a professional and as a person.
+
+education:
+    - degree: High Level Technician for Mobile Apps Engineering
+      university: I.T.S. Kennedy, Pordenone, Italy
+      time: 2015 - 2017
+      details: |
+        Postgraduate degree achieved with 100/100 academic degree
+    - degree: ICT Head Technician
+      university: ITIS J.F. Kennedy, Pordenone, Italy
+      time: 2009 - 2014
+      details: |
+        High school diploma achieved with 87/100 finals degree
+experiences:
+    - role: Mobile Lead Engineer
+      time: 2016 - now
+      company: MOLO17, Pordenone, Italy
+      details: |
+        Android and iOS Engineer primarily focused on the Android platform. 
+        Daily usage of Kotlin, Jetpack, Coroutines, Flow, MVVM, MVP, RxJava, Junit, Espresso. 
+        Working everyday in a remote team, in which I’m also actively supporting teammates 
+        and doing code reviews. In particular, I introduced the team to the Clean Architecture, 
+        and in 2019 also to the Kotlin Multiplatform world. 
+        I often write posts on the company’s blog about Kotlin and software engineering topics.
+        I joined as a speaker at: 
+          - Milan Kotlin Community Conf 2018;
+          - M17 Meetup at Mikamai LinkMe in Milan, 2018;
+          - Kotlin workshop at TEDx in Castelfranco Veneto (VE). 
+
+    - role: Java EE Developer
+      time: 2015
+      company: Magia3 Srl, Pordenone, Italy
+      details: |
+        Developer maintaining an ERP Java software backed by a Oracle infrastructure.
+
+projects:
+    title: Portfolio
+    intro: 
+    assignments:
+      - title: Healthcare and medical emergency Android app
+        timespan: 2020
+        tagline: |
+          Offline-first tablet application used by medical operators for collecting 
+          on-field data about rescued patients. The product targets most of the italian “A.S.L.”
+          and is installed on ambulances, helicopters and medical rescue cars. 
+          I actively contributed to the software design and development, and I implemented 
+          the communication between the app and two automated external defibrillators using the JNI.
+          I developed an annotation processor for integrating a custom navigation logic.
+        highlights: JNI, C, Annotation processing, Kotlin, MVVM, Coroutines, Dagger, Couchbase Lite, Git Flow
+
+      - title: Fintech app
+        timespan: 2019 – 2020
+        tagline: |
+          Public Android and iOS app providing financial products monitoring and 
+          notifications about investment ideas and related events.
+          Developed with Kotlin Multiplatform applying Clean Architecture for sharing business 
+          and data access logics across platforms.
+        highlights: Kotlin Multiplatform, MVVM, RxJava, RxSwift, Git Flow
+
+      - title: FashTime Android App
+        # link: "#"
+        timespan: 2019 – 2020
+        tagline: |
+          New social network concept in which users trade time instead of likes. 
+          I developed the Android version using the existing iOS app as a reference.
+          Worked together with the FashTime team.
+        highlights: Kotlin, MVVM, RxJava, Dagger, Jetpack Navigation, Glide, libjpegturbo, Git Flow
+
+      - title: Retail Android app and cash register HTTP server
+        timespan: 2019 – 2020
+        tagline: |
+          Enterprise Android app built on top of the Zebra TC8000 device. 
+          Helping the workforce of customer’s retail shops to categorize sold items and make the receipt.
+          The app scans the item barcode which is sent to an HTTP REST server I made that runs on the cash registers.
+        highlights: Kotlin, RxJava, Dagger, Retrofit, Jetpack Navigation, Glide
+
+      - title: TwinForce, Workforce Management iOS app
+        timespan: 2019 – 2020
+        tagline: |
+          White label B2B iPad application for providing on-field access to the ERP software
+          to factory’s operators. I contributed to the development of the iPad app including making 
+          the whole UI from scratch, keeping it customizable to different look and feel. 
+          I also proposed the white label branching model for Git that is currently 
+          adopted for the various customers.
+        highlights: iOS, Swift, RxSwift, Swinject, Moya, Couchbase Lite, Git Flow
+
+      - title: GlueSync
+        timespan: 2019 – 2020
+        tagline: |
+          Kotlin JVM daemon application that runs on Docker that migrates a selected set 
+          of tables from a relational database to a NoSQL store and vice-versa. 
+          The product is configurable, with a vendor-agnostic sync engine and a set of 
+          vendor-specific plugins for maximizing compatibility.
+        highlights: Kotlin, Coroutines, Docker Compose, AWS EC2, SQL Server, Couchbase Server, Oracle
+
+      - title: Fintech CRM and Corporate Chat
+        timespan: 2017 – 2018
+        tagline: |
+          Enterprise Android app which summarizes financial KPIs overview of customers, 
+          tracks progress and manages proposed financial products.
+          I implemented a chat with a custom protocol over web sockets.
+        highlights: Kotlin, MVP, RxJava, Dagger, Retrofit, Picasso
+
+      - title: United Arab Emirates chat project
+        timespan: 2016 – 2017
+        tagline: |
+          Android messaging app for a UAE Company. The app allows to send text and media,
+          and to make VoIP calls. Worked with an international team with people from Australia, 
+          Hungary and the United Kingdom. Stayed in Dubai for 3 weeks.
+        highlights: Java, MVC, RxJava, OkHttp, Picasso
+
+# publications:
+#     title: Publications
+#     intro: |
+#       You can list your publications in this section. Lorem ipsum dolor sit
+#       amet, consectetur adipiscing elit. Vestibulum et ligula in nunc
+#       bibendum fringilla a eu lectus.
+#     papers:
+#       - title: The Art of Computer Programming
+#         link: "#"
+#         authors: Donald E. Knuth
+#         conference: Addison-Wesley, 1968
+
+#       - title: "Genetic Programming III: Darwinian Invention &amp; Problem Solving"
+#         link: "#"
+#         authors: Koza, J.R., Andre, D., Bennett, F.H., Keane, M.A.
+#         conference: "Morgan Kaufmann Publishers Inc., San Francisco, CA, USA, 1st edn. (1999)"
+
+#       - title: A syntax directed compiler for Algol 60
+#         link: "#"
+#         authors: Edgar T. Irons
+#         conference: "Comm. ACM 4 (1961), 51–55"
+
+skills:
+    title: What I'm good at
+
+    toolset:
+      - name: Android development
+        level: 95%
+
+      - name: Kotlin Multiplatform
+        level: 95%
+
+      - name: iOS development
+        level: 70%
+
+      - name: Swift
+        level: 80%
+
+      - name: Testing
+        level: 85%
+
+      - name: Design patterns
+        level: 90%
+
+      - name: ReactJS
+        level: 60%
+
+      - name: TypeScript
+        level: 67%
+
+      - name: Firebase cloud stack
+        level: 80%
+
+      - name: Docker
+        level: 70%
+
+footer: >
+    Made with <i class="fas fa-heart"></i> using Jekyll and <a href="https://github.com/sharu725/online-cv" target="_blank" rel="nofollow">online-cv</a>
