@@ -59,8 +59,14 @@ education:
       details: |
         High school diploma achieved with 87/100 finals degree
 experiences:
+    - role: Android Engineer
+      time: 2021 - now
+      company: Empatica, Milano (full-remote), Italy
+      details: |
+        Android Engineer working on Care for EmbracePlus, the new flagship smartwatch in the
+        healthcare sector.  
     - role: Mobile Lead Engineer
-      time: 2016 - now
+      time: 2016 - 2021
       company: MOLO17, Pordenone, Italy
       details: |
         Android and iOS Engineer primarily focused on the Android platform. 
