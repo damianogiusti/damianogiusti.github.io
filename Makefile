@@ -11,4 +11,5 @@ dependencies:  ## Download project dependencies
 	@bundle install
 
 start: ## Start the Jekyll development server
+	@sleep 3 && open http://localhost:4000 &
 	@bundle exec jekyll serve --livereload
