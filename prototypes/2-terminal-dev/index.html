@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>damianogiusti — blog</title>
+<link rel="stylesheet" href="style.css">
+<script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;})();</script>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="bar">
+    <span class="dots"><i></i><i></i><i></i></span>
+    <span class="path">~/<b>damiano</b>/blog</span>
+    <span class="spacer"></span>
+    <a href="index.html">blog</a>
+    <a href="#">résumé</a>
+    <button class="toggle" id="toggle">theme</button>
+  </div>
+
+  <section class="prompt">
+    <div class="line"><span class="ps">damiano@blog</span>:<span style="color:var(--accent2)">~</span>$ <span class="cmd">whoami</span></div>
+    <span class="out"><b>Damiano Giusti</b> — Android Engineer. Notes on Kotlin Multiplatform,<br>mobile architecture, and shipping apps that survive contact with production.<span class="cursor"></span></span>
+  </section>
+
+  <div class="listing">
+    <div class="head">$ ls -lt posts/ &nbsp;&nbsp;# 4 entries</div>
+
+    <div class="row">
+      <span class="date">2019-04-05</span>
+      <div>
+        <h2><a href="article.html">kotlin-multiplatform-part-3</a></h2>
+        <p class="desc">Wiring the shared module into Android and iOS, and what the build does under the hood.</p>
+        <div class="tags"><span>Kotlin</span><span>Multiplatform</span><span>iOS</span></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <span class="date">2019-03-22</span>
+      <div>
+        <h2><a href="article.html">kotlin-inline-classes</a></h2>
+        <p class="desc">Zero-cost wrappers that vanish at compile time — when they help and when they bite.</p>
+        <div class="tags"><span>Kotlin</span><span>Android</span></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <span class="date">2019-02-22</span>
+      <div>
+        <h2><a href="article.html">kotlin-multiplatform-part-2</a></h2>
+        <p class="desc">Sharing business logic across platforms without giving up native UI.</p>
+        <div class="tags"><span>Kotlin</span><span>Multiplatform</span><span>Android</span></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <span class="date">2019-02-04</span>
+      <div>
+        <h2><a href="article.html">kotlin-multiplatform-part-1</a></h2>
+        <p class="desc">Why share code at all, and how expect/actual fits together.</p>
+        <div class="tags"><span>Kotlin</span><span>Multiplatform</span><span>Android</span></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-foot">
+    <span>© 2026 damianogiusti</span>
+    <span><a href="#">github</a> · <a href="#">linkedin</a></span>
+  </footer>
+
+</div>
+<script>
+document.getElementById('toggle').addEventListener('click',function(){
+  var r=document.documentElement, n=r.dataset.theme==='light'?'dark':'light';
+  r.dataset.theme=n; localStorage.setItem('theme',n);
+});
+</script>
+</body>
+</html>

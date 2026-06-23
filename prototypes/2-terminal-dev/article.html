@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kotlin-multiplatform-part-1 — damianogiusti</title>
+<link rel="stylesheet" href="style.css">
+<script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;})();</script>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="bar">
+    <span class="dots"><i></i><i></i><i></i></span>
+    <span class="path">~/<b>damiano</b>/blog/posts/kmp-part-1.md</span>
+    <span class="spacer"></span>
+    <a href="index.html">blog</a>
+    <a href="#">résumé</a>
+    <button class="toggle" id="toggle">theme</button>
+  </div>
+
+  <div class="crumb"><a href="index.html">~/blog</a> / posts / kotlin-multiplatform-part-1</div>
+
+  <article>
+    <div class="article-head">
+      <h1>A trip into Kotlin Multiplatform Projects, Part 1</h1>
+      <div class="meta">2019-02-04 · 6 min · <b>@damianogiusti</b></div>
+    </div>
+
+    <div class="prose">
+      <p>
+        Sharing code across Android and iOS used to mean compromise: a cross-platform
+        UI toolkit, a web view, or a pile of conditional logic. <b>Kotlin Multiplatform</b>
+        takes a different route — share the logic, keep the native UI.
+      </p>
+
+      <h2>The shape of a shared module</h2>
+      <p>
+        A multiplatform module declares a common source set plus one per target. The
+        common code states <em>what</em> it needs; each platform supplies <em>how</em>.
+        That contract is <code>expect</code> / <code>actual</code>:
+      </p>
+
+      <pre><code><span class="tc">// commonMain — shared declaration</span>
+<span class="tk">expect class</span> <span class="ty">Platform</span>() {
+    <span class="tk">val</span> platform: <span class="ty">String</span>
+}
+
+<span class="tc">// androidMain — actual implementation</span>
+<span class="tk">actual class</span> <span class="ty">Platform</span> <span class="tk">actual constructor</span>() {
+    <span class="tk">actual val</span> platform: <span class="ty">String</span> =
+        <span class="ts">"Android ${Build.VERSION.SDK_INT}"</span>
+}</code></pre>
+
+      <p>
+        The compiler guarantees every <code>expect</code> has a matching
+        <code>actual</code> for the target you build. Miss one and the build fails —
+        no runtime surprises.
+      </p>
+
+      <blockquote>
+        Share the cost of correctness once; pay for platform polish where it actually
+        matters — at the edges, in the UI.
+      </blockquote>
+
+      <h3>Where this pays off</h3>
+      <p>
+        Networking, serialization, validation, and state machines are identical on
+        both platforms. Move them into <code>commonMain</code> and the duplication —
+        and the bugs that drift between two copies — disappears.
+      </p>
+      <p>
+        In <a href="#">Part 2</a> we wire a real repository into the shared module and
+        consume it from an Android <code>ViewModel</code> and a Swift view.
+      </p>
+    </div>
+
+    <nav class="post-nav">
+      <a href="#"><span class="lbl">← prev</span>kotlin-inline-classes</a>
+      <a href="#" style="text-align:right"><span class="lbl">next →</span>kmp-part-2</a>
+    </nav>
+  </article>
+
+  <footer class="site-foot">
+    <span>© 2026 damianogiusti</span>
+    <span><a href="#">github</a> · <a href="#">linkedin</a></span>
+  </footer>
+
+</div>
+<script>
+document.getElementById('toggle').addEventListener('click',function(){
+  var r=document.documentElement, n=r.dataset.theme==='light'?'dark':'light';
+  r.dataset.theme=n; localStorage.setItem('theme',n);
+});
+</script>
+</body>
+</html>

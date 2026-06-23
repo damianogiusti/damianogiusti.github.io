@@ -1,0 +1,198 @@
+/* ── Editorial ────────────────────────────────────────────────
+   Swiss/magazine. Serif display headings, clean sans body.
+   Numbered index rows, hairline rules, one red accent.
+   Hierarchy over decoration — no shadows, no rounded cards. */
+
+:root {
+  --bg:      #fbfbf9;
+  --fg:      #16161a;
+  --muted:   #6a6a72;
+  --faint:   #9a9aa2;
+  --accent:  #d8362a;
+  --rule:    #1616161a;
+  --rule-s:  #16161614;
+  --code-bg: #f1f1ee;
+}
+[data-theme="dark"] {
+  --bg:      #111113;
+  --fg:      #ececec;
+  --muted:   #9a9aa0;
+  --faint:   #67676d;
+  --accent:  #ff5246;
+  --rule:    #ffffff1f;
+  --rule-s:  #ffffff12;
+  --code-bg: #1a1a1d;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.serif {
+  font-family: "Spectral", "Iowan Old Style", Georgia, "Times New Roman", serif;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.wrap { max-width: 56rem; margin: 0 auto; padding: 0 1.75rem; }
+
+/* ── masthead ── */
+.masthead {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 2.6rem 0 1.2rem;
+  border-bottom: 2px solid var(--fg);
+}
+.masthead .title {
+  font-family: "Spectral", Georgia, serif;
+  font-size: 1.7rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1;
+}
+.masthead .title em { color: var(--accent); font-style: normal; }
+.masthead nav {
+  display: flex; gap: 1.6rem; align-items: center;
+  font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.masthead nav a:hover { color: var(--accent); }
+.toggle {
+  background: none; border: none; cursor: pointer; font: inherit;
+  text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.8rem; color: var(--muted);
+  padding: 0;
+}
+.toggle:hover { color: var(--accent); }
+.sub {
+  display: flex; justify-content: space-between;
+  padding: 0.55rem 0; font-size: 0.76rem; color: var(--faint);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  border-bottom: 1px solid var(--rule-s);
+}
+
+/* ── lede ── */
+.lede {
+  font-family: "Spectral", Georgia, serif;
+  font-size: 1.5rem; line-height: 1.35; font-weight: 400;
+  margin: 3rem 0 3.2rem; max-width: 38rem; letter-spacing: -0.01em;
+}
+.lede b { color: var(--accent); font-weight: 600; }
+
+/* ── index rows ── */
+.index { border-top: 1px solid var(--rule); }
+.entry {
+  display: grid;
+  grid-template-columns: 3rem 1fr 9rem;
+  gap: 1.5rem;
+  padding: 1.7rem 0;
+  border-bottom: 1px solid var(--rule-s);
+  align-items: baseline;
+}
+.entry:hover .num { color: var(--accent); }
+.entry:hover h2 { color: var(--accent); }
+.entry .num {
+  font-size: 0.85rem; color: var(--faint); font-variant-numeric: tabular-nums;
+  padding-top: 0.4rem;
+}
+.entry h2 {
+  font-family: "Spectral", Georgia, serif;
+  margin: 0 0 0.35rem; font-size: 1.7rem; font-weight: 600;
+  letter-spacing: -0.02em; line-height: 1.12; transition: color .15s;
+}
+.entry p { margin: 0; color: var(--muted); font-size: 0.96rem; max-width: 34rem; }
+.entry .col {
+  text-align: right; font-size: 0.76rem; color: var(--faint);
+  text-transform: uppercase; letter-spacing: 0.06em; line-height: 1.7;
+}
+.entry .col .cat { color: var(--muted); }
+
+@media (max-width: 640px) {
+  .entry { grid-template-columns: 2rem 1fr; }
+  .entry .col { display: none; }
+}
+
+/* ── article ── */
+.article { max-width: 38rem; margin: 0 auto; }
+.kicker {
+  margin: 3rem 0 1rem; font-size: 0.76rem; text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--accent); font-weight: 600;
+}
+.article h1 {
+  font-family: "Spectral", Georgia, serif;
+  font-size: 2.7rem; line-height: 1.08; font-weight: 700;
+  letter-spacing: -0.025em; margin: 0 0 1.1rem;
+}
+.byline {
+  display: flex; gap: 1rem; align-items: center;
+  padding-bottom: 1.8rem; margin-bottom: 2.2rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.85rem; color: var(--muted);
+}
+.byline .who { color: var(--fg); font-weight: 600; }
+
+.prose { font-size: 1.12rem; line-height: 1.72; }
+.prose > p:first-of-type::first-letter {
+  font-family: "Spectral", Georgia, serif;
+  float: left; font-size: 3.4rem; line-height: 0.8; font-weight: 700;
+  padding: 0.35rem 0.6rem 0 0; color: var(--accent);
+}
+.prose p { margin: 1.3rem 0; }
+.prose h2 {
+  font-family: "Spectral", Georgia, serif;
+  font-size: 1.7rem; font-weight: 600; letter-spacing: -0.02em;
+  margin: 2.8rem 0 0.8rem;
+}
+.prose h3 { font-size: 1.2rem; font-weight: 700; margin: 2rem 0 0.5rem; }
+.prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+
+.prose blockquote {
+  font-family: "Spectral", Georgia, serif;
+  margin: 2rem -0.5rem; padding: 0 0 0 1.4rem;
+  border-left: 3px solid var(--accent);
+  font-size: 1.4rem; line-height: 1.4; color: var(--fg); font-style: italic;
+}
+
+.prose code {
+  font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+  font-size: 0.82em; background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 3px;
+}
+.prose pre {
+  font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+  background: var(--code-bg);
+  border-left: 3px solid var(--accent);
+  padding: 1.1rem 1.2rem; overflow-x: auto; margin: 1.8rem -0.5rem;
+  font-size: 0.84rem; line-height: 1.6;
+}
+.prose pre code { background: none; padding: 0; }
+
+/* tokens */
+.tc { color: var(--faint); font-style: italic; }
+.tk { color: var(--accent); font-weight: 600; }
+.ty { color: #1f7a5e; }
+.ts { color: #9a6a1f; }
+[data-theme="dark"] .ty { color: #6fcaa6; }
+[data-theme="dark"] .ts { color: #d6a85f; }
+
+/* prev/next */
+.post-nav {
+  display: flex; justify-content: space-between; gap: 1.5rem;
+  margin: 3.5rem 0 0; padding-top: 1.5rem; border-top: 1px solid var(--rule);
+  font-size: 0.9rem;
+}
+.post-nav .lbl {
+  display: block; font-size: 0.72rem; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--faint); margin-bottom: 0.25rem;
+}
+.post-nav a { font-family: "Spectral", Georgia, serif; font-size: 1.05rem; }
+.post-nav a:hover { color: var(--accent); }
+
+/* footer */
+.site-foot {
+  margin: 4rem 0 3rem; padding-top: 1.3rem; border-top: 2px solid var(--fg);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+  font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--faint);
+}
+.site-foot a:hover { color: var(--accent); }

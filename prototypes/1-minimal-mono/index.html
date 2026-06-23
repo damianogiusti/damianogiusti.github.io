@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Damiano Giusti — Notes on mobile engineering</title>
+<link rel="stylesheet" href="style.css">
+<script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;})();</script>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="site-head">
+    <a class="brand" href="index.html">Damiano Giusti<span class="dot">.</span></a>
+    <nav class="site-nav mono">
+      <a href="index.html">Writing</a>
+      <a href="#">Résumé</a>
+      <button class="toggle" id="toggle" aria-label="Toggle theme">theme</button>
+    </nav>
+  </header>
+
+  <p class="intro">
+    Android Engineer. I write about <b>Kotlin Multiplatform</b>, mobile architecture,
+    and the small details of building apps that ship.
+  </p>
+
+  <ul class="posts">
+    <li class="post-row">
+      <time class="mono" datetime="2019-04-05">2019 — Apr 05</time>
+      <h2><a href="article.html">A trip into Kotlin Multiplatform Projects, Part 3</a></h2>
+      <p>Wiring the shared module into Android and iOS, and what the build actually does under the hood.</p>
+      <div class="tags mono"><a href="#">Kotlin</a><a href="#">Multiplatform</a><a href="#">iOS</a></div>
+    </li>
+    <li class="post-row">
+      <time class="mono" datetime="2019-03-22">2019 — Mar 22</time>
+      <h2><a href="article.html">Kotlin inline classes, such magic</a></h2>
+      <p>Zero-cost wrappers that vanish at compile time — when they help and when they bite.</p>
+      <div class="tags mono"><a href="#">Kotlin</a><a href="#">Android</a></div>
+    </li>
+    <li class="post-row">
+      <time class="mono" datetime="2019-02-22">2019 — Feb 22</time>
+      <h2><a href="article.html">A trip into Kotlin Multiplatform Projects, Part 2</a></h2>
+      <p>Sharing business logic across platforms without giving up native UI.</p>
+      <div class="tags mono"><a href="#">Kotlin</a><a href="#">Multiplatform</a><a href="#">Android</a></div>
+    </li>
+    <li class="post-row">
+      <time class="mono" datetime="2019-02-04">2019 — Feb 04</time>
+      <h2><a href="article.html">A trip into Kotlin Multiplatform Projects, Part 1</a></h2>
+      <p>Why share code at all, and how the <code>expect</code>/<code>actual</code> mechanism fits together.</p>
+      <div class="tags mono"><a href="#">Kotlin</a><a href="#">Multiplatform</a><a href="#">Android</a></div>
+    </li>
+  </ul>
+
+  <footer class="site-foot mono">
+    <span>© 2026 Damiano Giusti</span>
+    <span><a href="#">GitHub</a> · <a href="#">LinkedIn</a></span>
+  </footer>
+
+</div>
+<script>
+document.getElementById('toggle').addEventListener('click',function(){
+  var r=document.documentElement, n=r.dataset.theme==='dark'?'light':'dark';
+  r.dataset.theme=n; localStorage.setItem('theme',n);
+});
+</script>
+</body>
+</html>
