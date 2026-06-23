@@ -247,6 +247,10 @@ function build404() {
   writeFile('404.html', page({ title: `404 — ${SITE.title}`, canonical: '/404.html', body }));
 }
 
+function buildRobots() {
+  writeFile('robots.txt', `User-agent: *\nDisallow:\n\nSitemap: ${SITE.url}/sitemap.xml\n`);
+}
+
 function buildSitemap(posts, cats) {
   const urls = ['/', '/about/', ...posts.map((p) => p.url), ...[...cats.keys()].map((c) => `/category/${slugifyCat(c)}/`)];
   const body = urls.map((u) => `  <url><loc>${SITE.url}${u}</loc></url>`).join('\n');
@@ -263,14 +267,13 @@ posts.forEach((p, i) => buildPost(p, posts[i - 1], posts[i + 1]));
 const cats = buildCategories(posts);
 buildAbout();
 build404();
+buildRobots();
 buildSitemap(posts, cats);
 
 // static files
 fs.copyFileSync(path.join(__dirname, 'style.css'), path.join(OUT, 'style.css'));
 copyDir(path.join(__dirname, 'assets'), path.join(OUT, 'assets'));
-for (const f of ['CNAME', 'robots.txt']) {
-  if (fs.existsSync(path.join(__dirname, f))) fs.copyFileSync(path.join(__dirname, f), path.join(OUT, f));
-}
+if (fs.existsSync(path.join(__dirname, 'CNAME'))) fs.copyFileSync(path.join(__dirname, 'CNAME'), path.join(OUT, 'CNAME'));
 fs.writeFileSync(path.join(OUT, '.nojekyll'), '');
 
 console.log(`Built ${posts.length} posts → dist/`);
