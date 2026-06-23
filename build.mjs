@@ -17,13 +17,16 @@ const SITE = {
   title: 'Damiano Giusti',
   url: 'https://www.damianogiusti.com',
   author: 'Damiano Giusti',
-  description: 'Android Engineer by day, guitar player by night. Notes on Kotlin Multiplatform, mobile architecture, and shipping apps.',
+  description: "Hi everybody, Damiano's here! Android Engineer at Empatica, Kotlin lover, and passionate about Android apps architecture. Welcome to my blog, a place where I share some pills from my every day experience about mobile apps development and software engineering.",
+  bio: 'Passionate Android Engineer ~ Android Engineer @Empatica ~ I do cool things with my 💻 and my 🎸',
+  gravatar: 'b7800707f9d6d9e1c053512554a5512f',
   resume: '/online-cv',
   github: 'https://github.com/damianogiusti',
   linkedin: 'https://www.linkedin.com/in/damiano-giusti-78bb30124',
   spotify: 'https://open.spotify.com/user/damiano.giusti',
   nowPlaying: { track: 'John Mayer · Slow Dancing in a Burning Room', url: 'https://open.spotify.com/user/damiano.giusti' },
 };
+const avatar = (s) => `https://www.gravatar.com/avatar/${SITE.gravatar}?s=${s}&d=mm`;
 
 /* ── markdown ── */
 const md = new MarkdownIt({
@@ -164,11 +167,12 @@ const postRow = (p) => `<li class="post-row">
 
 /* ── pages ── */
 function buildHome(posts) {
-  const body = `<p class="intro">
-  Android Engineer by day, <span class="accent">guitar player</span> by night.
-  I write about <b>Kotlin Multiplatform</b>, mobile architecture, and the small
-  details of building apps that ship.
-</p>
+  const body = `<div class="home-bio">
+  <img class="bio-avatar" src="${avatar(160)}" alt="${SITE.author}" width="56" height="56">
+  <p class="intro"><b>Hi everybody, Damiano's here!</b> Android Engineer at <span class="accent">Empatica</span>,
+  Kotlin lover, and passionate about Android apps architecture. Welcome to my blog, a place where I
+  share some pills from my every day experience about mobile apps development and software engineering.</p>
+</div>
 <ul class="posts">
 ${posts.map(postRow).join('\n')}
 </ul>`;
@@ -186,7 +190,10 @@ function buildPost(p, prev, next) {
   <div class="article-head">
     <span class="date">${fmtDate(p.date)}</span>
     <h1>${esc(p.title)}</h1>
-    <div class="byline">by <b>${SITE.author}</b></div>
+    <div class="byline">
+      <img class="byline-avatar" src="${avatar(80)}" alt="${SITE.author}" width="28" height="28">
+      by <b>${SITE.author}</b>
+    </div>
   </div>
   <div class="prose">${p.html}</div>
   ${nav}
