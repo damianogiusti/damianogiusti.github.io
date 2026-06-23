@@ -106,7 +106,6 @@ ${section(data['career-profile'].title || 'About', `<div class="cv-item"><div cl
 ${experiences()}
 ${projects()}
 ${education()}
-${skills()}
 
 <footer class="site-foot">
   <span class="np">♪ off the clock — guitar &amp; live music</span>
