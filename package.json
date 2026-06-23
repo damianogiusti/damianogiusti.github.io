@@ -1,0 +1,18 @@
+{
+  "name": "damianogiusti-blog",
+  "version": "2.0.0",
+  "description": "Personal tech blog — static site built from Markdown with a tiny custom generator.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "serve": "node build.mjs && npx -y serve dist",
+    "dev": "node build.mjs && npx -y serve dist"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "highlight.js": "^11.10.0",
+    "markdown-it": "^14.1.0",
+    "markdown-it-anchor": "^9.2.0"
+  }
+}

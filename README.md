@@ -1,23 +1,45 @@
-# Mediumish - Jekyll Theme
+# damianogiusti.com
 
-[Live Demo](https://wowthemesnet.github.io/mediumish-theme-jekyll/) &nbsp; | &nbsp; [Download](https://github.com/wowthemesnet/mediumish-theme-jekyll/archive/master.zip) &nbsp; | &nbsp; [Documentation](https://bootstrapstarter.com/bootstrap-templates/template-mediumish-bootstrap-jekyll/) &nbsp; | &nbsp; [Buy me a coffee](https://www.wowthemes.net/donate/)
+Personal tech blog. Static site built from Markdown by a tiny custom generator
+(`build.mjs`) — no Jekyll, no framework. One build step.
 
-![mediumish](assets/images/mediumish-jekyll-template.png)
+## Stack
 
+- **Content:** Markdown + YAML front matter in `src/posts/`, plus `src/about.md`.
+- **Build:** [`markdown-it`](https://github.com/markdown-it/markdown-it) (with
+  `markdown-it-anchor`), [`highlight.js`](https://highlightjs.org) for code, and
+  `gray-matter` for front matter. See `build.mjs`.
+- **Style:** one hand-written `style.css` — monospace, minimal, light/dark
+  (follows OS, with a persisted toggle). Shared with the
+  [online-cv](https://www.damianogiusti.com/online-cv) site.
+- **Deploy:** GitHub Actions builds `dist/` and publishes to GitHub Pages
+  (`.github/workflows/deploy.yml`).
 
-### Copyright
+## Develop
 
-Copyright (C) 2019 Sal, https://www.wowthemes.net
+```sh
+make dependencies   # npm install
+make build          # node build.mjs  -> dist/
+make start          # build + serve at http://localhost:3000
+```
 
-**Mediumish for Jekyll** is designed and developed by [Sal](https://www.wowthemes.net) and it is *free* under MIT license. 
+## Writing a post
 
-<a href="https://www.wowthemes.net/donate/" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+Add `src/posts/YYYY-MM-DD-slug.md`:
 
-### Contribute
+```markdown
+---
+title: "Your title"
+categories: [ Kotlin, Android ]
+image: /assets/images/your-cover.jpg
+---
 
-1. [Fork the repo](https://github.com/wowthemesnet/mediumish-theme-jekyll).
-2. Clone a copy of your fork on your local
-3. Create a branch off of master and give it a meaningful name (e.g. my-new-mediumish-feature).
-4. Make necessary changes, commit, push and open a pull request on GitHub.
+Body in Markdown. Fenced code blocks are syntax-highlighted.
+```
 
-Thank you!
+The date and URL slug come from the filename; the post is served at `/slug/`.
+
+## Style prototypes
+
+The three style directions evaluated before this rebuild live in `prototypes/`
+for reference.

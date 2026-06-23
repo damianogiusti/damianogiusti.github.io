@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Template prototypes — pick one</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    margin: 0; background: #fbfbf9; color: #16161a;
+    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) { body { background:#111113; color:#ececec; } a.card{ background:#16161a; border-color:#ffffff1f;} }
+  .wrap { max-width: 50rem; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 1.5rem; letter-spacing: -0.02em; margin: 0 0 0.3rem; }
+  .muted { color: #6a6a72; margin: 0 0 2.5rem; }
+  .grid { display: grid; gap: 1rem; }
+  a.card {
+    display: grid; grid-template-columns: 2rem 1fr auto; gap: 1rem; align-items: baseline;
+    text-decoration: none; color: inherit;
+    border: 1px solid #16161a1f; border-radius: 10px; padding: 1.3rem 1.4rem;
+    transition: border-color .15s, transform .1s;
+  }
+  a.card:hover { border-color: #d8362a; transform: translateY(-1px); }
+  .n { color: #9a9aa2; font-variant-numeric: tabular-nums; }
+  .card h2 { margin: 0 0 0.25rem; font-size: 1.15rem; letter-spacing: -0.01em; }
+  .card p { margin: 0; color: #6a6a72; font-size: 0.92rem; }
+  .links { font-size: 0.85rem; white-space: nowrap; }
+  .links a { color: #d8362a; text-decoration: none; }
+  .links a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Pick a template style</h1>
+  <p class="muted">Three directions for the new static-site template. Open both pages of each, toggle dark mode, then choose one to drive the full blog + CV revamp.</p>
+  <div class="grid">
+    <a class="card" href="1-minimal-mono/index.html">
+      <span class="n">01</span>
+      <span><h2>Minimal Mono</h2><p>Text-forward. Serif body, monospace metadata, single column, one warm accent. No cards, no noise.</p></span>
+      <span class="links"><a href="1-minimal-mono/index.html">home</a> · <a href="1-minimal-mono/article.html">article</a></span>
+    </a>
+    <a class="card" href="2-terminal-dev/index.html">
+      <span class="n">02</span>
+      <span><h2>Terminal / Dev</h2><p>Dark-by-default, monospace throughout, IDE/terminal aesthetic with a mint accent. Code-native.</p></span>
+      <span class="links"><a href="2-terminal-dev/index.html">home</a> · <a href="2-terminal-dev/article.html">article</a></span>
+    </a>
+    <a class="card" href="3-editorial/index.html">
+      <span class="n">03</span>
+      <span><h2>Editorial</h2><p>Swiss/magazine. Serif display headings, numbered index, hairline rules, one red accent. Strong hierarchy.</p></span>
+      <span class="links"><a href="3-editorial/index.html">home</a> · <a href="3-editorial/article.html">article</a></span>
+    </a>
+  </div>
+</div>
+</body>
+</html>

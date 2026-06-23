@@ -1,0 +1,1 @@
+**Hi everybody, Damiano's here!** Android Engineer at <span class="accent">Empatica</span>, Kotlin lover, and passionate about Android apps architecture. Welcome to my blog, a place where I share some pills from my every day experience about mobile apps development and software engineering.
