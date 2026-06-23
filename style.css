@@ -100,16 +100,23 @@ img { max-width: 100%; }
   :root:not([data-theme="light"]) .toggle .sun  { display: none; }
 }
 
-/* ── intro / home bio ── */
-.home-bio { display: flex; align-items: flex-start; gap: 1.1rem; margin: 0 0 3rem; max-width: 39rem; }
+/* ── intro / home bio (acts as the page header) ── */
+.home-bio {
+  display: flex; align-items: center; gap: 1.3rem;
+  margin: 0 0 2.6rem; padding-bottom: 2.2rem;
+  border-bottom: 1px solid var(--rule);
+}
 .home-bio .bio-avatar {
-  width: 56px; height: 56px; border-radius: 50%; flex: none;
+  width: 64px; height: 64px; border-radius: 50%; flex: none;
   border: 1px solid var(--rule); filter: saturate(1.05);
 }
 .intro { color: var(--muted); margin: 0; font-size: 0.96rem; }
 .intro b { color: var(--fg); font-weight: 500; }
 .intro .accent { color: var(--accent); }
-@media (max-width: 540px) { .home-bio { gap: 0.9rem; } }
+
+@media (max-width: 540px) {
+  .home-bio { flex-direction: column; align-items: flex-start; gap: 1rem; }
+}
 
 /* ── post list with cover thumbs ── */
 .posts { list-style: none; margin: 0; padding: 0; }
