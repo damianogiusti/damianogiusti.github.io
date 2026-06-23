@@ -1,5 +1,0 @@
-{% if post != null %}
-	{% assign readingTime = post.content | number_of_words | divided_by:200 | at_least:1 %}
-{% else %}
-	{% assign readingTime = content | number_of_words | divided_by:200 | at_least:1 %}
-{% endif %}

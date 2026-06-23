@@ -1,8 +1,5 @@
-_site
+node_modules
+dist
 .DS_Store
 *.swp
-.sass-cache
-.tweet-cache
 *~
-*.zip
-.jekyll-cache
