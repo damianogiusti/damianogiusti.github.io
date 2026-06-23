@@ -167,11 +167,11 @@ const postRow = (p) => `<li class="post-row">
 
 /* ── pages ── */
 function buildHome(posts) {
+  const bioPath = path.join(SRC, 'bio.md');
+  const bioHtml = fs.existsSync(bioPath) ? md.render(fs.readFileSync(bioPath, 'utf8')) : '';
   const body = `<div class="home-bio">
   <img class="bio-avatar" src="${avatar(320)}" alt="${SITE.author}" width="120" height="120">
-  <p class="intro"><b>Hi everybody, Damiano's here!</b> Android Engineer at <span class="accent">Empatica</span>,
-  Kotlin lover, and passionate about Android apps architecture. Welcome to my blog, a place where I
-  share some pills from my every day experience about mobile apps development and software engineering.</p>
+  <div class="intro">${bioHtml}</div>
 </div>
 <h2 class="list-head">Writing</h2>
 <ul class="posts">

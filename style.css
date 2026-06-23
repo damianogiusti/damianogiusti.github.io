@@ -121,7 +121,8 @@ img { max-width: 100%; }
   color: var(--faint); font-weight: 600; margin: 0 0 1.6rem;
 }
 .intro { color: var(--muted); margin: 0; font-size: 0.96rem; }
-.intro b { color: var(--fg); font-weight: 500; }
+.intro p { margin: 0; }
+.intro b, .intro strong { color: var(--fg); font-weight: 500; }
 .intro .accent { color: var(--accent); }
 
 @media (max-width: 540px) {
