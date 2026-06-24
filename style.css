@@ -132,10 +132,12 @@ img { max-width: 100%; }
 /* ── post list with cover thumbs ── */
 .posts { list-style: none; margin: 0; padding: 0; }
 .post-row {
-  display: grid; grid-template-columns: 6rem 1fr; gap: 1.3rem;
+  display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: 1.3rem;
   padding: 1.6rem 0; border-top: 1px solid var(--rule); align-items: start;
 }
 .post-row:first-child { border-top: none; padding-top: 0; }
+.post-row > div { min-width: 0; }
+.post-row h2, .post-row p { overflow-wrap: anywhere; }
 .post-row .cover {
   display: block; width: 6rem; height: 4.4rem; border-radius: 7px;
   object-fit: cover; border: 1px solid var(--rule); filter: saturate(1.05);
