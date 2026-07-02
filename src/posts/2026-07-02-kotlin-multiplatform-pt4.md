@@ -34,8 +34,8 @@ A few concrete numbers from the codebase I work on every day:
 - **Coroutines 1.9.0** for the threading abstraction I was so excited about in part 3
 - **Ktor 3.2.3** as the multiplatform HTTP client — remember the hand-rolled REST call from part 3?
   That whole problem is now a solved, cross-platform library.
-- **kotlinx.serialization** and **kotlinx.datetime**, two libraries that simply _did not exist_
-  when I wrote the original series
+- **kotlinx.serialization** and **kotlinx.datetime** — around back then, but still experimental and
+  something you adopted with a bit of faith; today they're just part of the toolbox
 - **Gradle 8.14.5** driving the whole thing
 
 Back in part 3 I spent paragraphs explaining how to abstract over threading, and how to move JSON
@@ -99,6 +99,14 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 val iosFrameworkName = "SharedMultiplatform"
 
+// every shared module - example names
+val sharedModules = listOf(
+    ":networking",
+    ":persistence",
+    ":domain",
+    // ...
+)
+
 kotlin {
     androidTarget()
 
@@ -113,51 +121,64 @@ kotlin {
             xcf.add(this)
         }
     }
+
+    sourceSets.commonMain.dependencies {
+        // pull every module into the umbrella
+        sharedModules.forEach { api(project(it)) }
+    }
 }
 ```
+
+That `sharedModules` list is the whole trick. Every library that used to be its own repository and
+its own framework is now just an entry here, folded into one compilation with a `forEach`. Adding a
+module to the shared layer means adding a line, not spinning up another framework. And because they
+all build together, the common code underneath them is linked exactly once.
 
 Two more things about this snippet are worth pausing on.
 
 First, notice the targets: `iosArm64` for real devices and `iosSimulatorArm64` for the simulator.
-In 2019 I was building for `iosX64` because everyone was on Intel Macs. The whole Apple Silicon
-transition happened _inside_ the lifetime of this technology, and KMP absorbed it by simply adding
-a target. That's the ecosystem maturing under your feet.
+In 2019 I was building for `iosX64`, because every Mac was Intel. That target still exists — but on
+Apple Silicon there's simply no reason to build for it anymore. 
+
+JetBrains **revised the targets DSL** (the hierarchical source-set model),
+so declaring and combining targets is cleaner than the fiddly setup I fought with back then. Same
+capability, a much better way to express it. That's the ecosystem maturing under your feet.
 
 Second, the `XCFramework` helper. This didn't exist in the old plugin. You used to assemble a fat
 framework by hand with a shell script full of `lipo` calls. Now it's one Gradle type.
 
-## Debug and release are two different animals
+## Getting the binary into the iOS app
 
-Another lesson that only shows up once you're shipping for real: the artifact you hand to a developer
-running the app in the simulator is **not** the artifact you ship in the store. So the build defines
-two packaging flavors — a **debug** XCFramework for day-to-day development and a **release** one,
-each zipped and versioned separately:
+The framework has to reach the iOS app as a **prebuilt, versioned artifact** — no cloning the shared
+repo, no Kotlin toolchain, no Gradle. So the build zips the assembled XCFramework:
 
 ```kotlin
-tasks.register<Zip>("zipReleaseXCFramework") {
-    dependsOn("assemble${iosFrameworkName}ReleaseXCFramework")
+tasks.register<Zip>("zipXCFramework") {
+    dependsOn("assemble${iosFrameworkName}XCFramework")
     archiveFileName.set("$iosFrameworkName-$version.zip")
-    // ...ready to be published and consumed by the iOS app
 }
 ```
 
-The debug build is fast to produce and easy to step through; the release build is optimized and
-stripped. Getting this split right is the difference between "the iOS engineers wait five minutes
-for every change" and "they don't notice the shared layer exists at all." And _not noticing_ is the
-goal — the best shared module is the one your platform teammates forget is written in Kotlin.
+To distribute it we lean on a tool the iOS world already knows: **Carthage**. It's happy distributing
+a prebuilt binary XCFramework, so it fetches the versioned zip, unpacks the framework, and Swift
+imports it like any normal dependency. The Kotlin layer ends up looking like _any other_ binary dep —
+which is the entire point. The best shared module is the one your platform teammates forget is written
+in Kotlin.
 
-## Getting the binary to the iOS app: Carthage
+This is the path we took, and it works — but it isn't free. The obvious cost is **debuggability**. A
+prebuilt binary is a black box: an iOS engineer who steps into the shared layer hits a compiled
+framework, not Kotlin source. When something misbehaves inside the shared code, you're debugging
+across a boundary you can't see through, and the tight edit-run-inspect loop that makes native
+development pleasant just isn't there.
 
-Producing a versioned zip is only half the story — the iOS app still has to _pull it in_. Rather than
-invent something bespoke, we lean on a tool the iOS world already knows: **Carthage**. It's usually
-thought of as a dependency manager for Swift/Objective-C frameworks, but it's perfectly happy
-distributing a **prebuilt binary XCFramework** too, which is exactly what our umbrella module produces.
-
-The nice part is that this makes the Kotlin layer look like _any other_ binary dependency to the iOS
-engineers. They don't build Kotlin, they don't touch Gradle, they don't care that the framework came
-out of Kotlin/Native. Carthage fetches the versioned XCFramework, drops it into the project, and Swift
-imports it like a normal framework. The whole "there is a Kotlin compiler somewhere upstream" detail
-stays invisible on the consuming side — which, again, is the entire point.
+There's another path that fixes exactly this: pull **iOS, Android, and the KMP layer into a single
+monorepo** and wire the shared code in as a source dependency the iOS project builds itself, instead
+of a binary it downloads. Now Xcode can step straight into the Kotlin, changes to the shared layer
+show up without republishing an artifact, and there's one version of everything because there's one
+repository. It's not a free lunch either — it drags the Kotlin toolchain into every iOS engineer's
+machine and makes the build heavier — but if debuggability and a single source of truth matter more
+than keeping the two worlds cleanly separated, it's the trade I'd reach for next. (That migration is
+a whole story of its own, and probably another post.)
 
 ## What I got right, and what I got wrong
 
@@ -211,3 +232,7 @@ code across platforms?" The answer turned out to be _yes_. The 2026 question is 
 and given what AI now does — **when should we?**"
 
 See you in part 5.
+
+---
+
+_Written by me and my AI assistant :)_
