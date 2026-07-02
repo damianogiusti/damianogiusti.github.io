@@ -159,6 +159,7 @@ ${article ? `<meta property="article:published_time" content="${article.publishe
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="/style.css">
+<link rel="alternate" type="application/atom+xml" title="${esc(SITE.title)} — feed" href="${SITE.url}/feed.xml">
 <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;})();</script>
 ${renderLd(jsonLd)}
 </head>
@@ -304,9 +305,44 @@ function buildRobots() {
 }
 
 function buildSitemap(posts, cats) {
-  const urls = ['/', '/about/', ...posts.map((p) => p.url), ...[...cats.keys()].map((c) => `/category/${slugifyCat(c)}/`)];
-  const body = urls.map((u) => `  <url><loc>${SITE.url}${u}</loc></url>`).join('\n');
+  const newest = posts.length ? posts[0].isoDate : null;
+  const entries = [
+    { loc: '/', lastmod: newest },
+    { loc: '/about/', lastmod: newest },
+    ...posts.map((p) => ({ loc: p.url, lastmod: p.isoDate })),
+    ...[...cats.keys()].map((c) => ({ loc: `/category/${slugifyCat(c)}/`, lastmod: newest })),
+    // résumé — served under the same domain from the online-cv project page
+    { loc: '/online-cv/' },
+    { loc: '/online-cv/molo17.html' },
+  ];
+  const body = entries.map((e) =>
+    `  <url><loc>${SITE.url}${e.loc}</loc>${e.lastmod ? `<lastmod>${e.lastmod}</lastmod>` : ''}</url>`).join('\n');
   writeFile('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`);
+}
+
+function buildFeed(posts) {
+  const updated = posts.length ? `${posts[0].isoDate}T00:00:00Z` : '1970-01-01T00:00:00Z';
+  const entries = posts.map((p) => `  <entry>
+    <title>${esc(p.title)}</title>
+    <link href="${abs(p.url)}"/>
+    <id>${abs(p.url)}</id>
+    <published>${p.isoDate}T00:00:00Z</published>
+    <updated>${p.isoDate}T00:00:00Z</updated>
+    ${p.categories.map((c) => `<category term="${esc(c)}"/>`).join('')}
+    <summary>${esc(p.excerpt)}</summary>
+  </entry>`).join('\n');
+  writeFile('feed.xml', `<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>${esc(SITE.title)}</title>
+  <subtitle>${esc(SITE.description)}</subtitle>
+  <link href="${SITE.url}/feed.xml" rel="self"/>
+  <link href="${SITE.url}/"/>
+  <id>${SITE.url}/</id>
+  <updated>${updated}</updated>
+  <author><name>${esc(SITE.author)}</name></author>
+${entries}
+</feed>
+`);
 }
 
 /* ── run ── */
@@ -321,6 +357,7 @@ buildAbout();
 build404();
 buildRobots();
 buildSitemap(posts, cats);
+buildFeed(posts);
 
 // static files
 fs.copyFileSync(path.join(__dirname, 'style.css'), path.join(OUT, 'style.css'));
