@@ -176,7 +176,9 @@ const pageShell = (inner, { titleText, description }) => `<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(titleText)}</title>
 <meta name="description" content="${esc(description)}">
-<link rel="icon" href="${BASE}/favicon.ico">
+<link rel="icon" href="${BASE}/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="${BASE}/favicon-32x32.png">
+<link rel="apple-touch-icon" href="${BASE}/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="${BASE}/style.css">
@@ -200,14 +202,16 @@ document.getElementById('toggle').addEventListener('click',function(){
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 fs.writeFileSync(path.join(OUT, 'index.html'), pageShell(mainBody, {
-  titleText: `${s.name} — ${s.tagline}`,
+  titleText: `${s.name} - ${s.tagline}`,
   description: `${s.name}, ${s.tagline}. Résumé and portfolio.`,
 }));
 fs.writeFileSync(path.join(OUT, 'molo17.html'), pageShell(molo17Body, {
-  titleText: `${s.name} — MOLO17 project history`,
+  titleText: `${s.name} - MOLO17 project history`,
   description: `${s.name}: full MOLO17 project history.`,
 }));
 fs.copyFileSync(path.join(__dirname, 'style.css'), path.join(OUT, 'style.css'));
-if (fs.existsSync(path.join(__dirname, 'favicon.ico'))) fs.copyFileSync(path.join(__dirname, 'favicon.ico'), path.join(OUT, 'favicon.ico'));
+for (const icon of ['favicon.ico', 'favicon-32x32.png', 'apple-touch-icon.png']) {
+  if (fs.existsSync(path.join(__dirname, icon))) fs.copyFileSync(path.join(__dirname, icon), path.join(OUT, icon));
+}
 fs.writeFileSync(path.join(OUT, '.nojekyll'), '');
 console.log('Built CV → dist/ (index.html + molo17.html)');
