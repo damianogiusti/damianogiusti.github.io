@@ -4,9 +4,9 @@ title: About
 permalink: /about
 ---
 
-I am **Damiano Giusti**, passionate **Android developer**, rock **music lover** and **guitar player**.
+I am **Damiano Giusti**, **Senior Mobile Engineer**, rock **music lover** and **guitar player**.
 
-Welcome to my blog, a place where I share some pills from my every day experience about mobile apps 
+Welcome to my blog, a place where I share notes from my day-to-day experience with mobile apps 
 development and software engineering. 
 
 I started developing for the Android platform back in 2013, and I published my first **app** in 
@@ -17,11 +17,12 @@ notifications and allowing students to easy consult their school report... Until
 
 # What I do
 
-I'm currently working as **Software Engineer** at [MOLO17](https://molo17.com), an italian company 
-which moves really fast. I'm an **Android Engineer**, but also I write some iOS stuff at times.
+I'm currently a **Senior Mobile Engineer** at [Empatica](https://www.empatica.com), building
+medical-grade wearables for continuous health monitoring. I work across **Android** and **iOS**,
+sharing business, data and UI logic with **Kotlin Multiplatform**.
 
-I'm involved in different projects for various customers, following all the development process steps.
-Moreover, I like writing about my work and my thoughts on [the company's blog](https://blog.molo17.com).
+I own features end to end — from BLE and the data pipeline up to the UI — and I like writing about
+mobile engineering and sharing what I learn along the way.
 
 ... _aaand_ I'm also a **guitar** player. I play in two bands, and I love **rock** music!
 
