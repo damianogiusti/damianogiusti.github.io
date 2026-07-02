@@ -1,1 +1,1 @@
-**Hi everybody, Damiano's here!** Android Engineer at <span class="accent">Empatica</span>, Kotlin lover, and passionate about Android apps architecture. Welcome to my blog, a place where I share some pills from my every day experience about mobile apps development and software engineering.
+**Hi, Damiano here!** Senior Mobile Engineer at <span class="accent">Empatica</span>, building medical-grade wearables across Android and iOS with Kotlin Multiplatform. Welcome to my blog — notes from my day-to-day in mobile apps development and software engineering.

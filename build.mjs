@@ -17,8 +17,11 @@ const SITE = {
   title: 'Damiano Giusti',
   url: 'https://www.damianogiusti.com',
   author: 'Damiano Giusti',
-  description: "Hi everybody, Damiano's here! Android Engineer at Empatica, Kotlin lover, and passionate about Android apps architecture. Welcome to my blog, a place where I share some pills from my every day experience about mobile apps development and software engineering.",
-  bio: 'Passionate Android Engineer ~ Android Engineer @Empatica ~ I do cool things with my 💻 and my 🎸',
+  jobTitle: 'Senior Mobile Engineer',
+  worksFor: 'Empatica',
+  knowsAbout: ['Kotlin', 'Kotlin Multiplatform', 'Android', 'iOS', 'Bluetooth Low Energy', 'Mobile app architecture'],
+  description: 'Senior Mobile Engineer writing about Android, iOS and Kotlin Multiplatform — over a decade building mobile apps, now medical-grade wearables at Empatica.',
+  bio: 'Senior Mobile Engineer @ Empatica ~ Android, iOS & Kotlin Multiplatform ~ I build things with my 💻 and my 🎸',
   gravatar: 'b7800707f9d6d9e1c053512554a5512f',
   resume: '/online-cv',
   github: 'https://github.com/damianogiusti',
@@ -27,6 +30,42 @@ const SITE = {
   nowPlaying: { track: 'John Mayer · Slow Dancing in a Burning Room', url: 'https://open.spotify.com/user/damiano.giusti' },
 };
 const avatar = (s) => `https://www.gravatar.com/avatar/${SITE.gravatar}?s=${s}&d=mm`;
+
+/* ── structured data (JSON-LD) ── */
+const abs = (u) => (u && u.startsWith('http') ? u : `${SITE.url}${u || '/'}`);
+const PERSON_ID = `${SITE.url}/#person`;
+const personLd = () => ({
+  '@type': 'Person', '@id': PERSON_ID,
+  name: SITE.author, url: `${SITE.url}/`, image: avatar(320),
+  jobTitle: SITE.jobTitle,
+  worksFor: { '@type': 'Organization', name: SITE.worksFor },
+  knowsAbout: SITE.knowsAbout,
+  sameAs: [SITE.github, SITE.linkedin, SITE.spotify],
+});
+const websiteLd = () => ({
+  '@type': 'WebSite', '@id': `${SITE.url}/#website`,
+  name: SITE.title, url: `${SITE.url}/`, inLanguage: 'en',
+  author: { '@id': PERSON_ID }, publisher: { '@id': PERSON_ID },
+});
+const postLd = (p) => ({
+  '@type': 'BlogPosting',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': abs(p.url) },
+  headline: p.title, description: p.excerpt,
+  ...(p.image ? { image: abs(p.image) } : {}),
+  datePublished: p.isoDate,
+  dateModified: p.isoDate,
+  author: { '@id': PERSON_ID }, publisher: { '@id': PERSON_ID },
+  ...(p.categories.length ? { keywords: p.categories.join(', ') } : {}),
+});
+const breadcrumbLd = (p) => ({
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Writing', item: `${SITE.url}/` },
+    { '@type': 'ListItem', position: 2, name: p.title, item: abs(p.url) },
+  ],
+});
+const renderLd = (list) => (!list || !list.length ? ''
+  : `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': list })}</script>`);
 
 /* ── markdown ── */
 const md = new MarkdownIt({
@@ -91,8 +130,9 @@ const footer = () => `<footer class="site-foot">
   </div>
 </footer>`;
 
-function page({ title, description, body, ogImage, canonical }) {
+function page({ title, description, body, ogImage, ogImageDims, canonical, jsonLd, ogType = 'website', article }) {
   const desc = description || SITE.description;
+  const [ogW, ogH] = (ogImageDims || '').split('x');
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -101,10 +141,17 @@ function page({ title, description, body, ogImage, canonical }) {
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${SITE.url}${canonical || '/'}">
-<meta property="og:type" content="website">
+<meta property="og:type" content="${ogType}">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
-${ogImage ? `<meta property="og:image" content="${SITE.url}${ogImage}">` : ''}
+<meta property="og:url" content="${abs(canonical || '/')}">
+<meta property="og:site_name" content="${esc(SITE.title)}">
+${ogImage ? `<meta property="og:image" content="${abs(ogImage)}">` : ''}
+${ogImage && ogW && ogH ? `<meta property="og:image:width" content="${ogW}">
+<meta property="og:image:height" content="${ogH}">` : ''}
+${article ? `<meta property="article:published_time" content="${article.published}">
+<meta property="article:modified_time" content="${article.modified || article.published}">
+<meta property="article:author" content="${esc(SITE.author)}">` : ''}
 <meta name="twitter:card" content="${ogImage ? 'summary_large_image' : 'summary'}">
 <link rel="icon" href="/assets/images/icons/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
@@ -112,7 +159,9 @@ ${ogImage ? `<meta property="og:image" content="${SITE.url}${ogImage}">` : ''}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="/style.css">
+<link rel="alternate" type="application/atom+xml" title="${esc(SITE.title)} — feed" href="${SITE.url}/feed.xml">
 <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;})();</script>
+${renderLd(jsonLd)}
 </head>
 <body>
 <div class="wrap">
@@ -146,6 +195,7 @@ function loadPosts() {
     const excerpt = (data.excerpt || plain.slice(0, 160)).trim();
     return {
       slug, date, html, excerpt,
+      isoDate: `${m[1]}-${m[2]}-${m[3]}`,
       title: data.title || slug,
       categories: data.categories || [],
       image: data.image || null,
@@ -177,7 +227,7 @@ function buildHome(posts) {
 <ul class="posts">
 ${posts.map(postRow).join('\n')}
 </ul>`;
-  writeFile('index.html', page({ title: `${SITE.title} - Senior Mobile Engineer`, body, canonical: '/' }));
+  writeFile('index.html', page({ title: `${SITE.title} - Senior Mobile Engineer`, body, canonical: '/', ogImage: '/assets/images/og-card.png', ogImageDims: '1200x630', jsonLd: [websiteLd(), personLd()] }));
 }
 
 function buildPost(p, prev, next) {
@@ -204,6 +254,9 @@ function buildPost(p, prev, next) {
     description: p.excerpt,
     ogImage: p.image,
     canonical: p.url,
+    ogType: 'article',
+    article: { published: p.isoDate, modified: p.isoDate },
+    jsonLd: [postLd(p), breadcrumbLd(p)],
     body,
   }));
 }
@@ -236,7 +289,7 @@ function buildAbout() {
   const { data, content } = matter(fs.readFileSync(file, 'utf8'));
   const body = `<div class="page-head"><h1>${esc(data.title || 'About')}</h1></div>
 <div class="prose">${md.render(content)}</div>`;
-  writeFile('about/index.html', page({ title: `${data.title || 'About'} — ${SITE.title}`, canonical: '/about/', body }));
+  writeFile('about/index.html', page({ title: `${data.title || 'About'} — ${SITE.title}`, canonical: '/about/', jsonLd: [personLd()], body }));
 }
 
 function build404() {
@@ -252,9 +305,44 @@ function buildRobots() {
 }
 
 function buildSitemap(posts, cats) {
-  const urls = ['/', '/about/', ...posts.map((p) => p.url), ...[...cats.keys()].map((c) => `/category/${slugifyCat(c)}/`)];
-  const body = urls.map((u) => `  <url><loc>${SITE.url}${u}</loc></url>`).join('\n');
+  const newest = posts.length ? posts[0].isoDate : null;
+  const entries = [
+    { loc: '/', lastmod: newest },
+    { loc: '/about/', lastmod: newest },
+    ...posts.map((p) => ({ loc: p.url, lastmod: p.isoDate })),
+    ...[...cats.keys()].map((c) => ({ loc: `/category/${slugifyCat(c)}/`, lastmod: newest })),
+    // résumé — served under the same domain from the online-cv project page
+    { loc: '/online-cv/' },
+    { loc: '/online-cv/molo17.html' },
+  ];
+  const body = entries.map((e) =>
+    `  <url><loc>${SITE.url}${e.loc}</loc>${e.lastmod ? `<lastmod>${e.lastmod}</lastmod>` : ''}</url>`).join('\n');
   writeFile('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`);
+}
+
+function buildFeed(posts) {
+  const updated = posts.length ? `${posts[0].isoDate}T00:00:00Z` : '1970-01-01T00:00:00Z';
+  const entries = posts.map((p) => `  <entry>
+    <title>${esc(p.title)}</title>
+    <link href="${abs(p.url)}"/>
+    <id>${abs(p.url)}</id>
+    <published>${p.isoDate}T00:00:00Z</published>
+    <updated>${p.isoDate}T00:00:00Z</updated>
+    ${p.categories.map((c) => `<category term="${esc(c)}"/>`).join('')}
+    <summary>${esc(p.excerpt)}</summary>
+  </entry>`).join('\n');
+  writeFile('feed.xml', `<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>${esc(SITE.title)}</title>
+  <subtitle>${esc(SITE.description)}</subtitle>
+  <link href="${SITE.url}/feed.xml" rel="self"/>
+  <link href="${SITE.url}/"/>
+  <id>${SITE.url}/</id>
+  <updated>${updated}</updated>
+  <author><name>${esc(SITE.author)}</name></author>
+${entries}
+</feed>
+`);
 }
 
 /* ── run ── */
@@ -269,6 +357,7 @@ buildAbout();
 build404();
 buildRobots();
 buildSitemap(posts, cats);
+buildFeed(posts);
 
 // static files
 fs.copyFileSync(path.join(__dirname, 'style.css'), path.join(OUT, 'style.css'));
