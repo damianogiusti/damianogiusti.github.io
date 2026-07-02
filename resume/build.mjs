@@ -169,7 +169,27 @@ ${exploded(molo.sections)}`)}
 
 ${footer}`;
 
-const pageShell = (inner, { titleText, description }) => `<!doctype html>
+// Absolute URLs for canonical/OG/JSON-LD — always production, independent of CV_BASE.
+const SITE_URL = 'https://www.damianogiusti.com';
+const CANON = `${SITE_URL}/online-cv`;
+const personLd = () => ({
+  '@context': 'https://schema.org', '@type': 'Person',
+  '@id': `${CANON}/#person`,
+  name: s.name, url: `${CANON}/`, image: s.avatar,
+  jobTitle: 'Senior Mobile Engineer',
+  worksFor: { '@type': 'Organization', name: 'Empatica' },
+  knowsAbout: ['Kotlin', 'Kotlin Multiplatform', 'Android', 'iOS', 'Bluetooth Low Energy', 'Mobile app architecture'],
+  alumniOf: (data.education || []).map((e) => ({ '@type': 'EducationalOrganization', name: e.university })),
+  sameAs: [
+    'https://github.com/damianogiusti',
+    'https://www.linkedin.com/in/damiano-giusti-78bb30124',
+    'https://open.spotify.com/user/damiano.giusti',
+  ],
+});
+const renderLd = (list) => (!list || !list.length ? ''
+  : list.map((o) => `<script type="application/ld+json">${JSON.stringify(o)}</script>`).join('\n'));
+
+const pageShell = (inner, { titleText, description, jsonLd }) => `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -183,6 +203,7 @@ const pageShell = (inner, { titleText, description }) => `<!doctype html>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="${BASE}/style.css">
 <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;})();</script>
+${renderLd(jsonLd)}
 </head>
 <body>
 <div class="wrap">
@@ -204,6 +225,7 @@ fs.mkdirSync(OUT, { recursive: true });
 fs.writeFileSync(path.join(OUT, 'index.html'), pageShell(mainBody, {
   titleText: `${s.name} - ${s.tagline}`,
   description: `${s.name}, ${s.tagline}. Résumé and portfolio.`,
+  jsonLd: [personLd()],
 }));
 fs.writeFileSync(path.join(OUT, 'molo17.html'), pageShell(molo17Body, {
   titleText: `${s.name} - MOLO17 project history`,
