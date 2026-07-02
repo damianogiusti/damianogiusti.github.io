@@ -169,13 +169,44 @@ ${exploded(molo.sections)}`)}
 
 ${footer}`;
 
-const pageShell = (inner, { titleText, description }) => `<!doctype html>
+// Absolute URLs for canonical/OG/JSON-LD — always production, independent of CV_BASE.
+const SITE_URL = 'https://www.damianogiusti.com';
+const CANON = `${SITE_URL}/online-cv`;
+const personLd = () => ({
+  '@context': 'https://schema.org', '@type': 'Person',
+  '@id': `${CANON}/#person`,
+  name: s.name, url: `${CANON}/`, image: s.avatar,
+  jobTitle: 'Senior Mobile Engineer',
+  worksFor: { '@type': 'Organization', name: 'Empatica' },
+  knowsAbout: ['Kotlin', 'Kotlin Multiplatform', 'Android', 'iOS', 'Bluetooth Low Energy', 'Mobile app architecture'],
+  alumniOf: (data.education || []).map((e) => ({ '@type': 'EducationalOrganization', name: e.university })),
+  sameAs: [
+    'https://github.com/damianogiusti',
+    'https://www.linkedin.com/in/damiano-giusti-78bb30124',
+    'https://open.spotify.com/user/damiano.giusti',
+  ],
+});
+const renderLd = (list) => (!list || !list.length ? ''
+  : list.map((o) => `<script type="application/ld+json">${JSON.stringify(o)}</script>`).join('\n'));
+
+const pageShell = (inner, { titleText, description, jsonLd, canonical, ogType = 'website', ogImage }) => `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(titleText)}</title>
 <meta name="description" content="${esc(description)}">
+${canonical ? `<link rel="canonical" href="${canonical}">` : ''}
+<meta property="og:type" content="${ogType}">
+<meta property="og:title" content="${esc(titleText)}">
+<meta property="og:description" content="${esc(description)}">
+${canonical ? `<meta property="og:url" content="${canonical}">` : ''}
+<meta property="og:site_name" content="${esc(s.name)}">
+${ogImage ? `<meta property="og:image" content="${ogImage}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="${ogImage}">` : ''}
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="${BASE}/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="${BASE}/favicon-32x32.png">
 <link rel="apple-touch-icon" href="${BASE}/apple-touch-icon.png">
@@ -183,6 +214,7 @@ const pageShell = (inner, { titleText, description }) => `<!doctype html>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="${BASE}/style.css">
 <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;})();</script>
+${renderLd(jsonLd)}
 </head>
 <body>
 <div class="wrap">
@@ -203,14 +235,20 @@ fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 fs.writeFileSync(path.join(OUT, 'index.html'), pageShell(mainBody, {
   titleText: `${s.name} - ${s.tagline}`,
-  description: `${s.name}, ${s.tagline}. Résumé and portfolio.`,
+  description: 'Senior Mobile Engineer with over a decade in Android and cross-platform iOS using Kotlin Multiplatform, building medical-grade wearables at Empatica.',
+  canonical: `${CANON}/`,
+  ogType: 'profile',
+  ogImage: `${CANON}/og-card.png`,
+  jsonLd: [personLd()],
 }));
 fs.writeFileSync(path.join(OUT, 'molo17.html'), pageShell(molo17Body, {
   titleText: `${s.name} - MOLO17 project history`,
   description: `${s.name}: full MOLO17 project history.`,
+  canonical: `${CANON}/molo17.html`,
+  ogImage: `${CANON}/og-card.png`,
 }));
 fs.copyFileSync(path.join(__dirname, 'style.css'), path.join(OUT, 'style.css'));
-for (const icon of ['favicon.ico', 'favicon-32x32.png', 'apple-touch-icon.png']) {
+for (const icon of ['favicon.ico', 'favicon-32x32.png', 'apple-touch-icon.png', 'og-card.png']) {
   if (fs.existsSync(path.join(__dirname, icon))) fs.copyFileSync(path.join(__dirname, icon), path.join(OUT, icon));
 }
 fs.writeFileSync(path.join(OUT, '.nojekyll'), '');
