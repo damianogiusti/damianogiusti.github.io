@@ -130,8 +130,9 @@ const footer = () => `<footer class="site-foot">
   </div>
 </footer>`;
 
-function page({ title, description, body, ogImage, canonical, jsonLd }) {
+function page({ title, description, body, ogImage, ogImageDims, canonical, jsonLd, ogType = 'website', article }) {
   const desc = description || SITE.description;
+  const [ogW, ogH] = (ogImageDims || '').split('x');
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -140,10 +141,17 @@ function page({ title, description, body, ogImage, canonical, jsonLd }) {
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${SITE.url}${canonical || '/'}">
-<meta property="og:type" content="website">
+<meta property="og:type" content="${ogType}">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
-${ogImage ? `<meta property="og:image" content="${SITE.url}${ogImage}">` : ''}
+<meta property="og:url" content="${abs(canonical || '/')}">
+<meta property="og:site_name" content="${esc(SITE.title)}">
+${ogImage ? `<meta property="og:image" content="${abs(ogImage)}">` : ''}
+${ogImage && ogW && ogH ? `<meta property="og:image:width" content="${ogW}">
+<meta property="og:image:height" content="${ogH}">` : ''}
+${article ? `<meta property="article:published_time" content="${article.published}">
+<meta property="article:modified_time" content="${article.modified || article.published}">
+<meta property="article:author" content="${esc(SITE.author)}">` : ''}
 <meta name="twitter:card" content="${ogImage ? 'summary_large_image' : 'summary'}">
 <link rel="icon" href="/assets/images/icons/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
@@ -218,7 +226,7 @@ function buildHome(posts) {
 <ul class="posts">
 ${posts.map(postRow).join('\n')}
 </ul>`;
-  writeFile('index.html', page({ title: `${SITE.title} - Senior Mobile Engineer`, body, canonical: '/', jsonLd: [websiteLd(), personLd()] }));
+  writeFile('index.html', page({ title: `${SITE.title} - Senior Mobile Engineer`, body, canonical: '/', ogImage: '/assets/images/og-card.png', ogImageDims: '1200x630', jsonLd: [websiteLd(), personLd()] }));
 }
 
 function buildPost(p, prev, next) {
@@ -245,6 +253,8 @@ function buildPost(p, prev, next) {
     description: p.excerpt,
     ogImage: p.image,
     canonical: p.url,
+    ogType: 'article',
+    article: { published: p.isoDate, modified: p.isoDate },
     jsonLd: [postLd(p), breadcrumbLd(p)],
     body,
   }));
