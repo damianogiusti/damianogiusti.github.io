@@ -59,12 +59,20 @@ education:
       details: |
         High school diploma achieved with 87/100 finals degree
 experiences:
-    - role: Android Engineer
+    - role: Senior Mobile Engineer
       time: 2021 - now
       company: Empatica, Milano (full-remote), Italy
       details: |
-        Android Engineer working on Care for EmbracePlus, the new flagship smartwatch in the
-        healthcare sector.  
+        Mobile engineer on Empatica's EmbracePlus platform — a medical-grade smartwatch
+        for continuous, clinical-quality health monitoring. Over 5 years I moved from
+        Android feature work into cross-platform (Android + iOS) and mobile platform
+        engineering. Daily Kotlin, Jetpack Compose, Coroutines/Flow, Koin and Kotlin
+        Multiplatform, sharing business, data and UI logic across both platforms. My work
+        spans the full stack of a sensor product — BLE pairing and multidevice, on-device
+        data collection and sync, firmware upgrade, encrypted storage — and the clinical
+        apps built on top of it. I also build the platform underneath the apps (shared KMP
+        libraries, a cross-platform UI test framework, monorepo build tooling), and mentor
+        and review code across the team on both platforms.
     - role: Mobile Lead Engineer
       time: 2016 - 2021
       company: MOLO17, Pordenone, Italy
@@ -90,77 +98,136 @@ projects:
     title: Portfolio
     intro: 
     assignments:
-      - title: Healthcare and medical emergency Android app
-        timespan: 2020
+      - title: "Empatica — EmbracePlus"
+        timespan: 2021 – now
         tagline: |
-          Offline-first tablet application used by medical operators for collecting 
-          on-field data about rescued patients. The product targets most of the italian “A.S.L.”
-          and is installed on ambulances, helicopters and medical rescue cars. 
-          I actively contributed to the software design and development, and I implemented 
-          the communication between the app and two automated external defibrillators using the JNI.
-          I developed an annotation processor for integrating a custom navigation logic.
-        highlights: JNI, C, Annotation processing, Kotlin, MVVM, Coroutines, Dagger, Couchbase Lite, Git Flow
+          EmbracePlus is Empatica's medical-grade smartwatch for continuous, clinical-quality
+          health monitoring. A single Android and Kotlin Multiplatform codebase ships as four
+          separately branded medical products, all backed by a shared device SDK. As a senior
+          engineer I own features end to end — from BLE and the data pipeline up to the Compose
+          UI — across Android and iOS, drive cross-platform architecture, and mentor and review
+          across the mobile team.
+        sections:
 
-      - title: Fintech app
-        timespan: 2019 – 2020
-        tagline: |
-          Public Android and iOS app providing financial products monitoring and 
-          notifications about investment ideas and related events.
-          Developed with Kotlin Multiplatform applying Clean Architecture for sharing business 
-          and data access logics across platforms.
-        highlights: Kotlin Multiplatform, MVVM, RxJava, RxSwift, Git Flow
+          - name: Care
+            tagline: |
+              The flagship EmbracePlus health-monitoring app: device onboarding and BLE pairing,
+              continuous background monitoring, health-data collection and sync, over-the-air
+              firmware upgrade, encrypted local storage, a health diary and daily tasks
+              (medications, questionnaires, functional tests), plus multidevice support so one
+              app drives several devices at once.
+            highlights: Kotlin, Kotlin Multiplatform, Jetpack Compose, Coroutines, Flow, Koin, Bluetooth LE
 
-      - title: FashTime Android App
-        # link: "#"
-        timespan: 2019 – 2020
-        tagline: |
-          New social network concept in which users trade time instead of likes. 
-          I developed the Android version using the existing iOS app as a reference.
-          Worked together with the FashTime team.
-        highlights: Kotlin, MVVM, RxJava, Dagger, Jetpack Navigation, Glide, libjpegturbo, Git Flow
+          - name: Care Lab
+            tagline: |
+              The research build of the app, used to run clinical studies on EmbracePlus. I own
+              the flavor-specific behavior, resources and localization that separate research
+              from clinical, along with study-oriented configuration and per-build observability,
+              keeping one codebase serving very different regulatory and study contexts.
+            highlights: Kotlin, Koin, MVVM, Feature flags, DataDog, CI/CD, Instrumented & E2E testing
 
-      - title: Retail Android app and cash register HTTP server
-        timespan: 2019 – 2020
-        tagline: |
-          Enterprise Android app built on top of the Zebra TC8000 device. 
-          Helping the workforce of customer’s retail shops to categorize sold items and make the receipt.
-          The app scans the item barcode which is sent to an HTTP REST server I made that runs on the cash registers.
-        highlights: Kotlin, RxJava, Dagger, Retrofit, Jetpack Navigation, Glide
+          - name: EpiMonitor
+            tagline: |
+              Epilepsy monitoring built on EmbracePlus seizure detection, with real-time
+              caregiver alerting: when a seizure is detected the app notifies caregivers and can
+              share the patient's location. I built the seizure reporting experience — event
+              detail and report screens, review, notes and false-positive marking — and the
+              epilepsy onboarding flow.
+            highlights: Kotlin, Jetpack Compose, Material3, Coroutines, Flow, Location & alerting
 
-      - title: TwinForce, Workforce Management iOS app
-        timespan: 2019 – 2020
-        tagline: |
-          White label B2B iPad application for providing on-field access to the ERP software
-          to factory’s operators. I contributed to the development of the iPad app including making 
-          the whole UI from scratch, keeping it customizable to different look and feel. 
-          I also proposed the white label branching model for Git that is currently 
-          adopted for the various customers.
-        highlights: iOS, Swift, RxSwift, Swinject, Moya, Couchbase Lite, Git Flow
+          - name: PKG Monitor
+            tagline: |
+              Parkinson's disease monitoring that turns continuous sensor data into a clinical
+              diary. I built credentialless participant onboarding — login without personal
+              credentials, cloud-region selection, phone and Bluetooth compatibility checks — and
+              the PD-details experience on Android and iOS: tremor banded charts, sleep-graph
+              timelines, per-symptom severity, daily-summary donuts, weekly trends and an
+              AI-generated insights flow, all data-driven from the shared platform.
+            highlights: Kotlin, Kotlin Multiplatform, Jetpack Compose, Coroutines, Flow, Koin, Bluetooth LE, Screenshot testing
 
-      - title: GlueSync
-        timespan: 2019 – 2020
-        tagline: |
-          Kotlin JVM daemon application that runs on Docker that migrates a selected set 
-          of tables from a relational database to a NoSQL store and vice-versa. 
-          The product is configurable, with a vendor-agnostic sync engine and a set of 
-          vendor-specific plugins for maximizing compatibility.
-        highlights: Kotlin, Coroutines, Docker Compose, AWS EC2, SQL Server, Couchbase Server, Oracle
+          - name: EmbracePlusSDK
+            tagline: |
+              The public Android SDK that lets third-party apps integrate the EmbracePlus device:
+              Bluetooth discovery, bonding and connection management, a device manager, and
+              streaming of on-device health signals. Distributed as an obfuscated, versioned
+              artifact with a custom licensing scheme that gates SDK access per integrator. I
+              contributed to the BLE, data-pipeline and device-management layers it exposes.
+            highlights: Kotlin, Bluetooth LE, Coroutines, Flow, ProGuard/R8, Maven publishing, Custom licensing
 
-      - title: Fintech CRM and Corporate Chat
-        timespan: 2017 – 2018
+      - title: MOLO17
+        id: molo17
+        timespan: 2016 – 2021
+        featured: 3
+        moreHref: molo17.html
+        moreLabel: Show all MOLO17 projects
         tagline: |
-          Enterprise Android app which summarizes financial KPIs overview of customers, 
-          tracks progress and manages proposed financial products.
-          I implemented a chat with a custom protocol over web sockets.
-        highlights: Kotlin, MVP, RxJava, Dagger, Retrofit, Picasso
+          As Mobile Lead Engineer I delivered Android and iOS apps across healthcare,
+          fintech, retail and enterprise, introduced the team to Clean Architecture and
+          Kotlin Multiplatform, and mentored teammates. A selection of the work:
+        sections:
 
-      - title: United Arab Emirates chat project
-        timespan: 2016 – 2017
-        tagline: |
-          Android messaging app for a UAE Company. The app allows to send text and media,
-          and to make VoIP calls. Worked with an international team with people from Australia, 
-          Hungary and the United Kingdom. Stayed in Dubai for 3 weeks.
-        highlights: Java, MVC, RxJava, OkHttp, Picasso
+          - name: Healthcare & medical emergency app (JNI + defibrillators)
+            when: 2020
+            tagline: |
+              Offline-first tablet app used by medical operators to collect on-field data about
+              rescued patients, deployed across Italian A.S.L. ambulances, helicopters and rescue
+              cars. I contributed to the design and development, bridged the app to two automated
+              external defibrillators over the JNI, and wrote an annotation processor for a custom
+              navigation logic.
+            highlights: JNI, C, Annotation processing, Kotlin, MVVM, Coroutines, Dagger, Couchbase Lite
+
+          - name: Fintech app (Kotlin Multiplatform)
+            when: 2019 – 2020
+            tagline: |
+              Public Android and iOS app for monitoring financial products and delivering
+              investment-idea notifications. Built with Kotlin Multiplatform and Clean Architecture
+              to share business and data logic across both platforms.
+            highlights: Kotlin Multiplatform, MVVM, RxJava, RxSwift
+
+          - name: TwinForce — Workforce Management iOS app
+            when: 2019 – 2020
+            tagline: |
+              White-label B2B iPad app giving factory operators on-field access to ERP software.
+              I built the whole UI from scratch, kept it themeable per customer, and proposed the
+              white-label Git branching model still used across customers.
+            highlights: iOS, Swift, RxSwift, Swinject, Moya, Couchbase Lite
+
+          - name: FashTime — social app
+            when: 2019 – 2020
+            tagline: |
+              New social-network concept where users trade time instead of likes. I built the
+              Android version from the existing iOS app, working with the FashTime team.
+            highlights: Kotlin, MVVM, RxJava, Dagger, Jetpack Navigation, Glide, libjpegturbo
+
+          - name: Retail app & cash-register HTTP server
+            when: 2019 – 2020
+            tagline: |
+              Enterprise Android app on the Zebra TC8000 helping retail staff categorize items and
+              issue receipts. Scanned barcodes are sent to an HTTP REST server I built that runs on
+              the cash registers.
+            highlights: Kotlin, RxJava, Dagger, Retrofit, Jetpack Navigation, Glide
+
+          - name: GlueSync
+            when: 2019 – 2020
+            tagline: |
+              Dockerized Kotlin/JVM daemon that migrates a selected set of tables between a
+              relational database and a NoSQL store in both directions. Configurable, with a
+              vendor-agnostic sync engine and vendor-specific plugins for compatibility.
+            highlights: Kotlin, Coroutines, Docker Compose, AWS EC2, SQL Server, Couchbase Server, Oracle
+
+          - name: Fintech CRM & corporate chat
+            when: 2017 – 2018
+            tagline: |
+              Enterprise Android app summarizing customers' financial KPIs, tracking progress and
+              managing proposed products. I implemented a chat with a custom protocol over web sockets.
+            highlights: Kotlin, MVP, RxJava, Dagger, Retrofit, Picasso
+
+          - name: UAE messaging app
+            when: 2016 – 2017
+            tagline: |
+              Android messaging app for a UAE company — text, media and VoIP calls. Built with an
+              international team (Australia, Hungary, UK); spent three weeks on-site in Dubai.
+            highlights: Java, MVC, RxJava, OkHttp, Picasso
 
 # publications:
 #     title: Publications
@@ -194,8 +261,14 @@ skills:
       - name: Kotlin Multiplatform
         level: 95%
 
+      - name: Jetpack Compose
+        level: 90%
+
+      - name: Bluetooth LE
+        level: 85%
+
       - name: iOS development
-        level: 70%
+        level: 75%
 
       - name: Swift
         level: 80%
@@ -217,6 +290,9 @@ skills:
 
       - name: Docker
         level: 70%
+
+      - name: CI/CD
+        level: 80%
 
 footer: >
     Made with <i class="fas fa-heart"></i> using Jekyll and <a href="https://github.com/sharu725/online-cv" target="_blank" rel="nofollow">online-cv</a>

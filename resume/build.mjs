@@ -9,10 +9,10 @@ import MarkdownIt from 'markdown-it';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.join(__dirname, 'dist');
-const BASE = '/online-cv'; // served as a project page under the blog domain
+const BASE = process.env.CV_BASE ?? '/online-cv'; // project-page path in prod; set CV_BASE='' for local preview
 
 const data = yaml.load(fs.readFileSync(path.join(__dirname, '_data', 'data.yml'), 'utf8'));
-const md = new MarkdownIt({ html: true, linkify: true, breaks: true });
+const md = new MarkdownIt({ html: true, linkify: true, breaks: false });
 
 const esc = (s = '') => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const dedent = (s = '') => {
@@ -51,13 +51,47 @@ function experiences() {
 </div>`).join('\n'));
 }
 
-function projects() {
-  const p = data.projects || {};
-  return section(p.title || 'Portfolio', (p.assignments || []).map((a) => `<div class="cv-item">
+const chips = (h) => (h ? `<div class="chips">${h.split(',').map((x) => `<span>${esc(x.trim())}</span>`).join('')}</div>` : '');
+
+function subsections(list) {
+  return `<div class="subsections">${(list || []).map((sub) => `<details class="subsection">
+  <summary><span class="sub-name">${esc(sub.name)}</span></summary>
+  <div class="sub-body">
+    <div class="body">${mdBlock(sub.tagline)}</div>
+    ${chips(sub.highlights)}
+  </div>
+</details>`).join('\n')}</div>`;
+}
+
+// "Exploded" render: each sub-project as its own full cv-item (no accordion).
+function exploded(list) {
+  return (list || []).map((sub) => `<div class="cv-item">
+  <div class="top"><h3>${esc(sub.name)}</h3>${sub.when ? `<span class="when">${esc(sub.when)}</span>` : ''}</div>
+  <div class="body">${mdBlock(sub.tagline)}</div>
+  ${chips(sub.highlights)}
+</div>`).join('\n');
+}
+
+// Main page: cap sections at `featured` (when set) and show a "more" CTA to the dedicated page.
+function assignmentItem(a) {
+  const secs = a.sections || [];
+  const capped = a.featured != null;
+  const shown = capped ? secs.slice(0, a.featured) : secs;
+  const cta = capped && a.moreHref && secs.length > a.featured
+    ? `<a class="more-link" href="${esc(a.moreHref)}">${esc(a.moreLabel || 'Show full history')} →</a>`
+    : '';
+  return `<div class="cv-item"${a.id ? ` id="${esc(a.id)}"` : ''}>
   <div class="top"><h3>${esc(a.title)}</h3><span class="when">${esc(a.timespan)}</span></div>
   <div class="body">${mdBlock(a.tagline)}</div>
-  ${a.highlights ? `<div class="chips">${a.highlights.split(',').map((h) => `<span>${esc(h.trim())}</span>`).join('')}</div>` : ''}
-</div>`).join('\n'));
+  ${chips(a.highlights)}
+  ${shown.length ? subsections(shown) : ''}
+  ${cta}
+</div>`;
+}
+
+function projects() {
+  const p = data.projects || {};
+  return section(p.title || 'Portfolio', (p.assignments || []).map((a) => assignmentItem(a)).join('\n'));
 }
 
 function education() {
@@ -83,13 +117,24 @@ const TOGGLE = `<button class="toggle" id="toggle" aria-label="Toggle light/dark
 </button>`;
 
 const s = data.sidebar;
-const body = `<header class="site-head">
+
+const header = `<header class="site-head">
   <a class="brand" href="/">${PICK} damiano giusti</a>
   <nav class="site-nav">
     <a href="/">writing</a>
     ${TOGGLE}
   </nav>
-</header>
+</header>`;
+
+const footer = `<footer class="site-foot">
+  <span class="np">♪ off the clock — guitar &amp; live music</span>
+  <div class="foot-row">
+    <span>© ${new Date().getFullYear()} ${esc(s.name)}</span>
+    <span><a href="https://github.com/${esc(s.github)}">github</a> · <a href="https://www.linkedin.com/in/${esc(s.linkedin)}">linkedin</a></span>
+  </div>
+</footer>`;
+
+const mainBody = `${header}
 
 <div class="cv-profile">
   <img class="avatar" src="${esc(s.avatar)}" alt="${esc(s.name)}">
@@ -107,21 +152,32 @@ ${experiences()}
 ${projects()}
 ${education()}
 
-<footer class="site-foot">
-  <span class="np">♪ off the clock — guitar &amp; live music</span>
-  <div class="foot-row">
-    <span>© ${new Date().getFullYear()} ${esc(s.name)}</span>
-    <span><a href="https://github.com/${esc(s.github)}">github</a> · <a href="https://www.linkedin.com/in/${esc(s.linkedin)}">linkedin</a></span>
-  </div>
-</footer>`;
+${footer}`;
 
-const html = `<!doctype html>
+const molo = (data.projects?.assignments || []).find((a) => a.id === 'molo17') || {};
+const molo17Body = `${header}
+
+<div class="cv-profile">
+  <div>
+    <h1>${esc(molo.title || 'MOLO17')}</h1>
+    <p class="tagline">Full project history${molo.timespan ? ` · ${esc(molo.timespan)}` : ''}</p>
+  </div>
+</div>
+
+${section('Projects', `<div class="cv-item"><div class="body">${mdBlock(molo.tagline)}</div></div>
+${exploded(molo.sections)}`)}
+
+<p class="back-row"><a class="more-link" href="index.html">← Back to CV</a></p>
+
+${footer}`;
+
+const pageShell = (inner, { titleText, description }) => `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(s.name)} — ${esc(s.tagline)}</title>
-<meta name="description" content="${esc(s.name)}, ${esc(s.tagline)}. Résumé and portfolio.">
+<title>${esc(titleText)}</title>
+<meta name="description" content="${esc(description)}">
 <link rel="icon" href="${BASE}/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
@@ -130,7 +186,7 @@ const html = `<!doctype html>
 </head>
 <body>
 <div class="wrap">
-${body}
+${inner}
 </div>
 <script>
 document.getElementById('toggle').addEventListener('click',function(){
@@ -145,8 +201,15 @@ document.getElementById('toggle').addEventListener('click',function(){
 
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
-fs.writeFileSync(path.join(OUT, 'index.html'), html);
+fs.writeFileSync(path.join(OUT, 'index.html'), pageShell(mainBody, {
+  titleText: `${s.name} — ${s.tagline}`,
+  description: `${s.name}, ${s.tagline}. Résumé and portfolio.`,
+}));
+fs.writeFileSync(path.join(OUT, 'molo17.html'), pageShell(molo17Body, {
+  titleText: `${s.name} — MOLO17 project history`,
+  description: `${s.name}: full MOLO17 project history.`,
+}));
 fs.copyFileSync(path.join(__dirname, 'style.css'), path.join(OUT, 'style.css'));
 if (fs.existsSync(path.join(__dirname, 'favicon.ico'))) fs.copyFileSync(path.join(__dirname, 'favicon.ico'), path.join(OUT, 'favicon.ico'));
 fs.writeFileSync(path.join(OUT, '.nojekyll'), '');
-console.log('Built CV → dist/');
+console.log('Built CV → dist/ (index.html + molo17.html)');
