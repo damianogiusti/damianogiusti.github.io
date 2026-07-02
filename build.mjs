@@ -17,6 +17,9 @@ const SITE = {
   title: 'Damiano Giusti',
   url: 'https://www.damianogiusti.com',
   author: 'Damiano Giusti',
+  jobTitle: 'Senior Mobile Engineer',
+  worksFor: 'Empatica',
+  knowsAbout: ['Kotlin', 'Kotlin Multiplatform', 'Android', 'iOS', 'Bluetooth Low Energy', 'Mobile app architecture'],
   description: "Hi everybody, Damiano's here! Android Engineer at Empatica, Kotlin lover, and passionate about Android apps architecture. Welcome to my blog, a place where I share some pills from my every day experience about mobile apps development and software engineering.",
   bio: 'Passionate Android Engineer ~ Android Engineer @Empatica ~ I do cool things with my 💻 and my 🎸',
   gravatar: 'b7800707f9d6d9e1c053512554a5512f',
@@ -27,6 +30,42 @@ const SITE = {
   nowPlaying: { track: 'John Mayer · Slow Dancing in a Burning Room', url: 'https://open.spotify.com/user/damiano.giusti' },
 };
 const avatar = (s) => `https://www.gravatar.com/avatar/${SITE.gravatar}?s=${s}&d=mm`;
+
+/* ── structured data (JSON-LD) ── */
+const abs = (u) => (u && u.startsWith('http') ? u : `${SITE.url}${u || '/'}`);
+const PERSON_ID = `${SITE.url}/#person`;
+const personLd = () => ({
+  '@type': 'Person', '@id': PERSON_ID,
+  name: SITE.author, url: `${SITE.url}/`, image: avatar(320),
+  jobTitle: SITE.jobTitle,
+  worksFor: { '@type': 'Organization', name: SITE.worksFor },
+  knowsAbout: SITE.knowsAbout,
+  sameAs: [SITE.github, SITE.linkedin, SITE.spotify],
+});
+const websiteLd = () => ({
+  '@type': 'WebSite', '@id': `${SITE.url}/#website`,
+  name: SITE.title, url: `${SITE.url}/`, inLanguage: 'en',
+  author: { '@id': PERSON_ID }, publisher: { '@id': PERSON_ID },
+});
+const postLd = (p) => ({
+  '@type': 'BlogPosting',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': abs(p.url) },
+  headline: p.title, description: p.excerpt,
+  ...(p.image ? { image: abs(p.image) } : {}),
+  datePublished: p.isoDate,
+  dateModified: p.isoDate,
+  author: { '@id': PERSON_ID }, publisher: { '@id': PERSON_ID },
+  ...(p.categories.length ? { keywords: p.categories.join(', ') } : {}),
+});
+const breadcrumbLd = (p) => ({
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Writing', item: `${SITE.url}/` },
+    { '@type': 'ListItem', position: 2, name: p.title, item: abs(p.url) },
+  ],
+});
+const renderLd = (list) => (!list || !list.length ? ''
+  : `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': list })}</script>`);
 
 /* ── markdown ── */
 const md = new MarkdownIt({
@@ -91,7 +130,7 @@ const footer = () => `<footer class="site-foot">
   </div>
 </footer>`;
 
-function page({ title, description, body, ogImage, canonical }) {
+function page({ title, description, body, ogImage, canonical, jsonLd }) {
   const desc = description || SITE.description;
   return `<!doctype html>
 <html lang="en">
@@ -113,6 +152,7 @@ ${ogImage ? `<meta property="og:image" content="${SITE.url}${ogImage}">` : ''}
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="/style.css">
 <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;})();</script>
+${renderLd(jsonLd)}
 </head>
 <body>
 <div class="wrap">
@@ -146,6 +186,7 @@ function loadPosts() {
     const excerpt = (data.excerpt || plain.slice(0, 160)).trim();
     return {
       slug, date, html, excerpt,
+      isoDate: `${m[1]}-${m[2]}-${m[3]}`,
       title: data.title || slug,
       categories: data.categories || [],
       image: data.image || null,
@@ -177,7 +218,7 @@ function buildHome(posts) {
 <ul class="posts">
 ${posts.map(postRow).join('\n')}
 </ul>`;
-  writeFile('index.html', page({ title: `${SITE.title} - Senior Mobile Engineer`, body, canonical: '/' }));
+  writeFile('index.html', page({ title: `${SITE.title} - Senior Mobile Engineer`, body, canonical: '/', jsonLd: [websiteLd(), personLd()] }));
 }
 
 function buildPost(p, prev, next) {
@@ -204,6 +245,7 @@ function buildPost(p, prev, next) {
     description: p.excerpt,
     ogImage: p.image,
     canonical: p.url,
+    jsonLd: [postLd(p), breadcrumbLd(p)],
     body,
   }));
 }
@@ -236,7 +278,7 @@ function buildAbout() {
   const { data, content } = matter(fs.readFileSync(file, 'utf8'));
   const body = `<div class="page-head"><h1>${esc(data.title || 'About')}</h1></div>
 <div class="prose">${md.render(content)}</div>`;
-  writeFile('about/index.html', page({ title: `${data.title || 'About'} — ${SITE.title}`, canonical: '/about/', body }));
+  writeFile('about/index.html', page({ title: `${data.title || 'About'} — ${SITE.title}`, canonical: '/about/', jsonLd: [personLd()], body }));
 }
 
 function build404() {
