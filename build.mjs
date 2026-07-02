@@ -177,7 +177,7 @@ function buildHome(posts) {
 <ul class="posts">
 ${posts.map(postRow).join('\n')}
 </ul>`;
-  writeFile('index.html', page({ title: `${SITE.title} — Notes on mobile engineering`, body, canonical: '/' }));
+  writeFile('index.html', page({ title: `${SITE.title} - Senior Mobile Engineer`, body, canonical: '/' }));
 }
 
 function buildPost(p, prev, next) {
