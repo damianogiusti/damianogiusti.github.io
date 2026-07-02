@@ -27,7 +27,6 @@ const ICON = {
   mail: '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>',
   linkedin: '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 014 0v4"/></svg>',
   github: '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-4 1.5-4-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 00-1.3-3.2 4.3 4.3 0 00-.1-3.2s-1-.3-3.4 1.3a11.6 11.6 0 00-6 0C6.3 2.3 5.3 2.6 5.3 2.6a4.3 4.3 0 00-.1 3.2A4.6 4.6 0 004 9c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>',
-  twitter: '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 5.8a8 8 0 01-2.3.6 4 4 0 001.8-2.2 8 8 0 01-2.5 1 4 4 0 00-6.8 3.6A11.3 11.3 0 013 4.8a4 4 0 001.2 5.3 4 4 0 01-1.8-.5 4 4 0 003.2 4 4 4 0 01-1.8.1 4 4 0 003.7 2.8A8 8 0 012 18.3a11.3 11.3 0 006.1 1.8c7.3 0 11.3-6 11.3-11.3v-.5A8 8 0 0022 5.8z"/></svg>',
   spotify: '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14.5c2.5-.8 5.5-.6 7.5.7M7.5 11.5c3-1 6.5-.7 9 1M8 8.5c3.5-1 7 0 9 1.2"/></svg>',
 };
 
@@ -36,7 +35,6 @@ function contacts() {
   if (s.email) out.push(`<a href="mailto:${esc(s.email)}">${ICON.mail}${esc(s.email)}</a>`);
   if (s.linkedin) out.push(`<a href="https://www.linkedin.com/in/${esc(s.linkedin)}">${ICON.linkedin}LinkedIn</a>`);
   if (s.github) out.push(`<a href="https://github.com/${esc(s.github)}">${ICON.github}GitHub</a>`);
-  if (s.twitter) out.push(`<a href="https://twitter.com/${esc(String(s.twitter).replace('@', ''))}">${ICON.twitter}${esc(s.twitter)}</a>`);
   if (s.spotify) out.push(`<a href="https://open.spotify.com/user/${esc(s.spotify)}">${ICON.spotify}Spotify</a>`);
   return out.join('\n');
 }
