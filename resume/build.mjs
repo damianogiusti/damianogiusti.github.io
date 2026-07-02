@@ -235,7 +235,7 @@ fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 fs.writeFileSync(path.join(OUT, 'index.html'), pageShell(mainBody, {
   titleText: `${s.name} - ${s.tagline}`,
-  description: `${s.name}, ${s.tagline}. Résumé and portfolio.`,
+  description: 'Senior Mobile Engineer with over a decade in Android and cross-platform iOS using Kotlin Multiplatform, building medical-grade wearables at Empatica.',
   canonical: `${CANON}/`,
   ogType: 'profile',
   ogImage: `${CANON}/og-card.png`,
