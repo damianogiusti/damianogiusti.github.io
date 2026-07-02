@@ -8,7 +8,7 @@ sidebar:
 
     # Profile information
     name: Damiano Giusti
-    tagline: Mobile Software Engineer
+    tagline: Senior Mobile Engineer
     avatar: https://www.gravatar.com/avatar/b7800707f9d6d9e1c053512554a5512f?s=500&d=mm&r=x
 
     # Sidebar links
@@ -40,12 +40,13 @@ sidebar:
 career-profile:
     title: About me
     summary: |
-      I am a Software Engineer who loves everything about the mobile apps world.
-      I have been developing apps for the Android platform since 2013. 
-      I care a lot about software architectures, testing and clean code. 
-      Moreover, I aim to deliver to end users smooth and fine-tuned apps, for the best possible 
-      user experience. I am curious and passionate about what I do, and I always try to get 
-      the most out of new challenges, to improve myself as a professional and as a person.
+      I'm a senior mobile engineer with over a decade building Android apps — and, more
+      recently, cross-platform Android and iOS with Kotlin Multiplatform. Today I work on
+      medical-grade wearables at Empatica, owning features end to end from BLE and the data
+      pipeline up to the UI, and building the shared platform and tooling the apps sit on.
+      I care deeply about clean architecture, testing, and the small details that make an app
+      feel fast and reliable — and I like taking on hard problems and helping the people
+      around me get better while I do it.
 
 education:
     - degree: High Level Technician for Mobile Apps Engineering
