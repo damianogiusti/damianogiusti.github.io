@@ -1,5 +1,5 @@
-// CV static generator: _data/data.yml -> single-page dist/index.html.
-// Shares the blog's style.css. No framework. Run with `node build.mjs`.
+// Résumé generator: resume/data.yml -> dist/resume/{index,molo17}.html.
+// Shares the blog's root style.css and favicons. Called by ../build.mjs via buildResume(OUT).
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -8,10 +8,8 @@ import yaml from 'js-yaml';
 import MarkdownIt from 'markdown-it';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const OUT = path.join(__dirname, 'dist');
-const BASE = process.env.CV_BASE ?? '/online-cv'; // project-page path in prod; set CV_BASE='' for local preview
 
-const data = yaml.load(fs.readFileSync(path.join(__dirname, '_data', 'data.yml'), 'utf8'));
+const data = yaml.load(fs.readFileSync(path.join(__dirname, 'data.yml'), 'utf8'));
 const md = new MarkdownIt({ html: true, linkify: true, breaks: false });
 
 const esc = (s = '') => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -120,6 +118,7 @@ const header = `<header class="site-head">
   <a class="brand" href="/">${PICK} damiano giusti</a>
   <nav class="site-nav">
     <a href="/">writing</a>
+    <a href="/resume">résumé</a>
     ${TOGGLE}
   </nav>
 </header>`;
@@ -169,9 +168,10 @@ ${exploded(molo.sections)}`)}
 
 ${footer}`;
 
-// Absolute URLs for canonical/OG/JSON-LD — always production, independent of CV_BASE.
+// Absolute URLs for canonical/OG/JSON-LD.
 const SITE_URL = 'https://www.damianogiusti.com';
-const CANON = `${SITE_URL}/online-cv`;
+const CANON = `${SITE_URL}/resume`;
+const OG_IMAGE = `${SITE_URL}/assets/images/og-card.png`;
 const personLd = () => ({
   '@context': 'https://schema.org', '@type': 'Person',
   '@id': `${CANON}/#person`,
@@ -207,12 +207,12 @@ ${ogImage ? `<meta property="og:image" content="${ogImage}">
 <meta property="og:image:height" content="630">
 <meta name="twitter:image" content="${ogImage}">` : ''}
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="${BASE}/favicon.ico" sizes="any">
-<link rel="icon" type="image/png" sizes="32x32" href="${BASE}/favicon-32x32.png">
-<link rel="apple-touch-icon" href="${BASE}/apple-touch-icon.png">
+<link rel="icon" href="/assets/images/icons/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/assets/images/icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="${BASE}/style.css">
+<link rel="stylesheet" href="/style.css">
 <script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;})();</script>
 ${renderLd(jsonLd)}
 </head>
@@ -231,25 +231,24 @@ document.getElementById('toggle').addEventListener('click',function(){
 </body>
 </html>`;
 
-fs.rmSync(OUT, { recursive: true, force: true });
-fs.mkdirSync(OUT, { recursive: true });
-fs.writeFileSync(path.join(OUT, 'index.html'), pageShell(mainBody, {
-  titleText: `${s.name} - ${s.tagline}`,
-  description: 'Senior Mobile Engineer with over a decade in Android and cross-platform iOS using Kotlin Multiplatform, building medical-grade wearables at Empatica.',
-  canonical: `${CANON}/`,
-  ogType: 'profile',
-  ogImage: `${CANON}/og-card.png`,
-  jsonLd: [personLd()],
-}));
-fs.writeFileSync(path.join(OUT, 'molo17.html'), pageShell(molo17Body, {
-  titleText: `${s.name} - MOLO17 project history`,
-  description: `${s.name}: full MOLO17 project history.`,
-  canonical: `${CANON}/molo17.html`,
-  ogImage: `${CANON}/og-card.png`,
-}));
-fs.copyFileSync(path.join(__dirname, 'style.css'), path.join(OUT, 'style.css'));
-for (const icon of ['favicon.ico', 'favicon-32x32.png', 'apple-touch-icon.png', 'og-card.png']) {
-  if (fs.existsSync(path.join(__dirname, icon))) fs.copyFileSync(path.join(__dirname, icon), path.join(OUT, icon));
+// Emit the résumé pages into dist/resume/. Shared style.css and favicons live at
+// the site root and are written by the blog build, so nothing is copied here.
+export function buildResume(OUT) {
+  const RES = path.join(OUT, 'resume');
+  fs.mkdirSync(RES, { recursive: true });
+  fs.writeFileSync(path.join(RES, 'index.html'), pageShell(mainBody, {
+    titleText: `${s.name} - ${s.tagline}`,
+    description: 'Senior Mobile Engineer with over a decade in Android and cross-platform iOS using Kotlin Multiplatform, building medical-grade wearables at Empatica.',
+    canonical: `${CANON}/`,
+    ogType: 'profile',
+    ogImage: OG_IMAGE,
+    jsonLd: [personLd()],
+  }));
+  fs.writeFileSync(path.join(RES, 'molo17.html'), pageShell(molo17Body, {
+    titleText: `${s.name} - MOLO17 project history`,
+    description: `${s.name}: full MOLO17 project history.`,
+    canonical: `${CANON}/molo17.html`,
+    ogImage: OG_IMAGE,
+  }));
+  console.log('Built résumé → dist/resume/ (index.html + molo17.html)');
 }
-fs.writeFileSync(path.join(OUT, '.nojekyll'), '');
-console.log('Built CV → dist/ (index.html + molo17.html)');

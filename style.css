@@ -256,3 +256,85 @@ img { max-width: 100%; }
 .np a:hover { text-decoration: underline; }
 .foot-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
 .foot-row a:hover { color: var(--accent); }
+
+/* ── résumé (/resume/) ────────────────────────────────────────
+   Reuses the shared palette, header, footer and prose above. */
+
+.cv-profile {
+  display: flex; align-items: center; gap: 1.3rem; margin: 0 0 1.4rem;
+}
+.cv-profile .avatar {
+  width: 120px; height: 120px; border-radius: 50%;
+  object-fit: cover; border: 1px solid var(--rule); filter: saturate(1.05); flex: none;
+}
+.cv-profile h1 { margin: 0; font-size: 1.5rem; color: var(--bright); font-weight: 600; letter-spacing: -0.01em; }
+.cv-profile .tagline { margin: 0.15rem 0 0; color: var(--accent); font-size: 0.95rem; }
+
+.cv-contact {
+  display: flex; flex-wrap: wrap; gap: 0.5rem 1.2rem;
+  margin: 0 0 2.6rem; padding-bottom: 1.6rem;
+  border-bottom: 1px solid var(--rule); font-size: 0.86rem;
+}
+.cv-contact a { color: var(--muted); display: inline-flex; align-items: center; gap: 0.4rem; }
+.cv-contact a:hover { color: var(--accent); }
+.cv-contact svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; flex: none; }
+
+.cv-section { margin: 0 0 3.6rem; }
+.cv-section > h2 {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--bright); font-weight: 600; margin: 0 0 1.6rem;
+  padding-bottom: 0.6rem; border-bottom: 2px solid var(--accent);
+}
+.cv-section > h2::before {
+  content: ""; width: 8px; height: 8px; border-radius: 2px;
+  background: var(--accent); flex: none;
+}
+
+.cv-item { margin: 0; padding: 1.4rem 0; border-top: 1px solid var(--rule); }
+.cv-item:first-of-type { border-top: none; padding-top: 0; }
+.cv-item:last-child { padding-bottom: 0; }
+.cv-item .top { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; align-items: baseline; }
+.cv-item h3 { margin: 0; font-size: 1rem; color: var(--bright); font-weight: 600; }
+.cv-item .when { color: var(--faint); font-size: 0.82rem; white-space: nowrap; }
+.cv-item .where { color: var(--accent); font-size: 0.88rem; margin: 0.1rem 0 0.4rem; }
+.cv-item .body { color: var(--muted); font-size: 0.92rem; }
+.cv-item .body p { margin: 0.4rem 0; }
+.cv-item .body ul { margin: 0.4rem 0; padding-left: 1.2rem; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.6rem; }
+.chips span {
+  font-size: 0.76rem; color: var(--accent);
+  background: var(--accent-soft); padding: 0.12rem 0.55rem; border-radius: 999px;
+}
+
+.subsections { margin-top: 1rem; border-top: 1px solid var(--rule); }
+.subsection { border-bottom: 1px solid var(--rule); }
+.subsection > summary {
+  list-style: none; cursor: pointer; padding: 0.7rem 0;
+  display: flex; align-items: center; gap: 0.6rem;
+  font-size: 0.94rem; font-weight: 600; color: var(--bright);
+}
+.subsection > summary::-webkit-details-marker { display: none; }
+.subsection > summary::before {
+  content: ""; flex: none; width: 0.5rem; height: 0.5rem;
+  border-right: 1.5px solid var(--accent); border-bottom: 1.5px solid var(--accent);
+  transform: rotate(-45deg); transition: transform 0.15s ease;
+}
+.subsection[open] > summary::before { transform: rotate(45deg); }
+.subsection > summary:hover { color: var(--accent); }
+.sub-body { padding: 0 0 0.9rem 1.1rem; }
+
+.more-link {
+  display: inline-block; margin-top: 1rem;
+  font-size: 0.86rem; font-weight: 600; color: var(--accent);
+}
+.more-link:hover { text-decoration: underline; }
+.back-row { margin: 1.6rem 0 0; }
+
+.skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem 1.6rem; }
+@media (max-width: 540px) { .skills-grid { grid-template-columns: 1fr; } }
+.skill .skill-top { display: flex; justify-content: space-between; font-size: 0.86rem; margin-bottom: 0.3rem; }
+.skill .skill-top .pct { color: var(--faint); }
+.skill .bar { height: 5px; background: var(--rule); border-radius: 999px; overflow: hidden; }
+.skill .bar i { display: block; height: 100%; background: var(--accent); border-radius: 999px; }

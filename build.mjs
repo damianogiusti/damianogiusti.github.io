@@ -8,6 +8,7 @@ import matter from 'gray-matter';
 import MarkdownIt from 'markdown-it';
 import anchor from 'markdown-it-anchor';
 import hljs from 'highlight.js';
+import { buildResume } from './resume/build.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SRC = path.join(__dirname, 'src');
@@ -23,7 +24,7 @@ const SITE = {
   description: 'Senior Mobile Engineer writing about Android, iOS and Kotlin Multiplatform — over a decade building mobile apps, now medical-grade wearables at Empatica.',
   bio: 'Senior Mobile Engineer @ Empatica ~ Android, iOS & Kotlin Multiplatform ~ I build things with my 💻 and my 🎸',
   gravatar: 'b7800707f9d6d9e1c053512554a5512f',
-  resume: '/online-cv',
+  resume: '/resume',
   github: 'https://github.com/damianogiusti',
   linkedin: 'https://www.linkedin.com/in/damiano-giusti-78bb30124',
   spotify: 'https://open.spotify.com/user/damiano.giusti',
@@ -304,6 +305,27 @@ function buildRobots() {
   writeFile('robots.txt', `User-agent: *\nDisallow:\n\nSitemap: ${SITE.url}/sitemap.xml\n`);
 }
 
+// The résumé used to live at /online-cv/ (a separate project-page repo). Keep those
+// URLs alive with redirect stubs so old inbound links land on the new /resume/ paths.
+function buildResumeRedirects() {
+  const stub = (to) => `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moved — ${esc(SITE.title)}</title>
+<link rel="canonical" href="${SITE.url}${to}">
+<meta name="robots" content="noindex, follow">
+<meta http-equiv="refresh" content="0; url=${to}">
+</head>
+<body>
+<p>This page moved to <a href="${to}">${SITE.url}${to}</a>.</p>
+</body>
+</html>`;
+  writeFile('online-cv/index.html', stub('/resume/'));
+  writeFile('online-cv/molo17.html', stub('/resume/molo17.html'));
+}
+
 function buildSitemap(posts, cats) {
   const newest = posts.length ? posts[0].isoDate : null;
   const entries = [
@@ -311,9 +333,9 @@ function buildSitemap(posts, cats) {
     { loc: '/about/', lastmod: newest },
     ...posts.map((p) => ({ loc: p.url, lastmod: p.isoDate })),
     ...[...cats.keys()].map((c) => ({ loc: `/category/${slugifyCat(c)}/`, lastmod: newest })),
-    // résumé — served under the same domain from the online-cv project page
-    { loc: '/online-cv/' },
-    { loc: '/online-cv/molo17.html' },
+    // résumé — built in-repo into dist/resume/
+    { loc: '/resume/' },
+    { loc: '/resume/molo17.html' },
   ];
   const body = entries.map((e) =>
     `  <url><loc>${SITE.url}${e.loc}</loc>${e.lastmod ? `<lastmod>${e.lastmod}</lastmod>` : ''}</url>`).join('\n');
@@ -358,6 +380,8 @@ build404();
 buildRobots();
 buildSitemap(posts, cats);
 buildFeed(posts);
+buildResume(OUT);          // résumé pages -> dist/resume/
+buildResumeRedirects();    // /online-cv/ -> /resume/ stubs
 
 // static files
 fs.copyFileSync(path.join(__dirname, 'style.css'), path.join(OUT, 'style.css'));
