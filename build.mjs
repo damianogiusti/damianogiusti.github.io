@@ -220,18 +220,25 @@ const postRow = (p) => `<li class="post-row">
 function buildLanding() {
   const bioPath = path.join(SRC, 'bio.md');
   const bioHtml = fs.existsSync(bioPath) ? md.render(fs.readFileSync(bioPath, 'utf8')) : '';
-  const linkRow = (href, label, desc, ext) =>
-    `<a class="link-row"${ext ? ' target="_blank" rel="noopener"' : ''} href="${href}"><span class="ln-text"><span class="ln-label">${esc(label)}</span><span class="ln-desc">${esc(desc)}</span></span><span class="ln-arrow" aria-hidden="true">→</span></a>`;
-  const body = `<div class="home-bio">
+  const ICONS = {
+    pen: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/>',
+    file: '<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/>',
+    music: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+  };
+  const linkRow = (href, label, desc, icon, ext) =>
+    `<a class="link-row"${ext ? ' target="_blank" rel="noopener"' : ''} href="${href}"><span class="ln-icon" aria-hidden="true"><svg viewBox="0 0 24 24">${ICONS[icon]}</svg></span><span class="ln-text"><span class="ln-label">${esc(label)}</span><span class="ln-desc">${esc(desc)}</span></span><span class="ln-arrow" aria-hidden="true">→</span></a>`;
+  const body = `<section class="lander">
+<div class="home-bio">
   <img class="bio-avatar" src="${avatar(320)}" alt="${SITE.author}" width="120" height="120">
   <div class="intro">${bioHtml}</div>
 </div>
 <nav class="links">
-  ${linkRow('/writing/', 'Writing', 'Notes on mobile & Kotlin')}
-  ${linkRow(SITE.resume, 'Résumé', 'What I’ve built')}
-  ${linkRow('https://www.panicstation.it', 'Panic Station', 'My band — I play guitar', true)}
+  ${linkRow('/writing/', 'Writing', 'Notes on mobile & Kotlin', 'pen')}
+  ${linkRow(SITE.resume, 'Résumé', 'What I’ve built', 'file')}
+  ${linkRow('https://www.panicstation.it', 'Panic Station', 'My band — I play guitar', 'music', true)}
 </nav>
-<p class="hero-social"><a href="${SITE.github}">github</a> · <a href="${SITE.linkedin}">linkedin</a> · <a href="${SITE.spotify}">spotify</a></p>`;
+<p class="hero-social"><a href="${SITE.github}">github</a> · <a href="${SITE.linkedin}">linkedin</a> · <a href="${SITE.spotify}">spotify</a></p>
+</section>`;
   writeFile('index.html', page({ title: `${SITE.title} — Senior Mobile Engineer`, body, canonical: '/', ogImage: '/assets/images/og-card.png', ogImageDims: '1200x630', jsonLd: [websiteLd(), personLd()] }));
 }
 
