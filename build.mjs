@@ -61,7 +61,7 @@ const postLd = (p) => ({
 const breadcrumbLd = (p) => ({
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Writing', item: `${SITE.url}/` },
+    { '@type': 'ListItem', position: 1, name: 'Writing', item: `${SITE.url}/writing/` },
     { '@type': 'ListItem', position: 2, name: p.title, item: abs(p.url) },
   ],
 });
@@ -117,7 +117,7 @@ const TOGGLE = `<button class="toggle" id="toggle" aria-label="Toggle light/dark
 const header = () => `<header class="site-head">
   <a class="brand" href="/">${PICK} damiano giusti</a>
   <nav class="site-nav">
-    <a href="/">writing</a>
+    <a href="/writing/">writing</a>
     <a href="${SITE.resume}">résumé</a>
     ${TOGGLE}
   </nav>
@@ -217,18 +217,33 @@ const postRow = (p) => `<li class="post-row">
 </li>`;
 
 /* ── pages ── */
-function buildHome(posts) {
+function buildLanding() {
   const bioPath = path.join(SRC, 'bio.md');
   const bioHtml = fs.existsSync(bioPath) ? md.render(fs.readFileSync(bioPath, 'utf8')) : '';
+  const linkRow = (href, label, desc, ext) =>
+    `<a class="link-row"${ext ? ' target="_blank" rel="noopener"' : ''} href="${href}"><span class="ln-text"><span class="ln-label">${esc(label)}</span><span class="ln-desc">${esc(desc)}</span></span><span class="ln-arrow" aria-hidden="true">→</span></a>`;
   const body = `<div class="home-bio">
   <img class="bio-avatar" src="${avatar(320)}" alt="${SITE.author}" width="120" height="120">
   <div class="intro">${bioHtml}</div>
 </div>
-<h2 class="list-head">Writing</h2>
+<nav class="links">
+  ${linkRow('/writing/', 'Writing', 'Notes on mobile & Kotlin')}
+  ${linkRow(SITE.resume, 'Résumé', 'What I’ve built')}
+  ${linkRow('https://www.panicstation.it', 'Panic Station', 'My band — I play guitar', true)}
+</nav>
+<p class="hero-social"><a href="${SITE.github}">github</a> · <a href="${SITE.linkedin}">linkedin</a> · <a href="${SITE.spotify}">spotify</a></p>`;
+  writeFile('index.html', page({ title: `${SITE.title} — Senior Mobile Engineer`, body, canonical: '/', ogImage: '/assets/images/og-card.png', ogImageDims: '1200x630', jsonLd: [websiteLd(), personLd()] }));
+}
+
+function buildWriting(posts) {
+  const body = `<div class="page-head">
+  <h1>Writing</h1>
+  <p>Notes from my day-to-day in mobile apps development and software engineering.</p>
+</div>
 <ul class="posts">
 ${posts.map(postRow).join('\n')}
 </ul>`;
-  writeFile('index.html', page({ title: `${SITE.title} - Senior Mobile Engineer`, body, canonical: '/', ogImage: '/assets/images/og-card.png', ogImageDims: '1200x630', jsonLd: [websiteLd(), personLd()] }));
+  writeFile('writing/index.html', page({ title: `Writing — ${SITE.title}`, description: SITE.description, body, canonical: '/writing/', ogImage: '/assets/images/og-card.png', ogImageDims: '1200x630', jsonLd: [websiteLd()] }));
 }
 
 function buildPost(p, prev, next) {
@@ -236,7 +251,7 @@ function buildPost(p, prev, next) {
   ${next ? `<a class="col" href="${next.url}"><span class="lbl">← previous</span>${esc(next.title)}</a>` : '<span></span>'}
   ${prev ? `<a class="col next" href="${prev.url}"><span class="lbl">next →</span>${esc(prev.title)}</a>` : '<span></span>'}
 </nav>`;
-  const body = `<div class="crumb"><a href="/">← writing</a></div>
+  const body = `<div class="crumb"><a href="/writing/">← writing</a></div>
 <article>
   ${p.image ? `<img class="hero" src="${p.image}" alt="">` : ''}
   <div class="article-head">
@@ -296,7 +311,7 @@ function buildAbout() {
 function build404() {
   const body = `<div class="notfound">
   <div class="code">404</div>
-  <p>This page hit a compile error. <a href="/">Back to writing →</a></p>
+  <p>This page hit a compile error. <a href="/writing/">Back to writing →</a></p>
 </div>`;
   writeFile('404.html', page({ title: `404 — ${SITE.title}`, canonical: '/404.html', body }));
 }
@@ -330,6 +345,7 @@ function buildSitemap(posts, cats) {
   const newest = posts.length ? posts[0].isoDate : null;
   const entries = [
     { loc: '/', lastmod: newest },
+    { loc: '/writing/', lastmod: newest },
     { loc: '/about/', lastmod: newest },
     ...posts.map((p) => ({ loc: p.url, lastmod: p.isoDate })),
     ...[...cats.keys()].map((c) => ({ loc: `/category/${slugifyCat(c)}/`, lastmod: newest })),
@@ -358,7 +374,7 @@ function buildFeed(posts) {
   <title>${esc(SITE.title)}</title>
   <subtitle>${esc(SITE.description)}</subtitle>
   <link href="${SITE.url}/feed.xml" rel="self"/>
-  <link href="${SITE.url}/"/>
+  <link href="${SITE.url}/writing/"/>
   <id>${SITE.url}/</id>
   <updated>${updated}</updated>
   <author><name>${esc(SITE.author)}</name></author>
@@ -372,7 +388,8 @@ fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 
 const posts = loadPosts();
-buildHome(posts);
+buildLanding();
+buildWriting(posts);
 posts.forEach((p, i) => buildPost(p, posts[i - 1], posts[i + 1]));
 const cats = buildCategories(posts);
 buildAbout();

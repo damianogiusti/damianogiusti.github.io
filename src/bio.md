@@ -1,1 +1,1 @@
-**Hi, Damiano here!** Senior Mobile Engineer at <span class="accent">Empatica</span>, building medical-grade wearables across Android and iOS with Kotlin Multiplatform. Welcome to my blog — notes from my day-to-day in mobile apps development and software engineering.
+**Hi, Damiano here!** Senior Mobile Engineer at <span class="accent">Empatica</span>, building medical-grade wearables across Android and iOS with Kotlin Multiplatform.

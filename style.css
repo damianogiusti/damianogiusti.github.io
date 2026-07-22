@@ -129,6 +129,25 @@ img { max-width: 100%; }
   .home-bio { flex-direction: column; align-items: center; text-align: center; gap: 1.1rem; }
 }
 
+/* ── landing (minimal hub — link cards are the UI) ── */
+.links { display: flex; flex-direction: column; gap: 0.7rem; margin: 0 0 2.6rem; }
+.link-row {
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  padding: 1rem 1.2rem; border: 1px solid var(--rule); border-radius: 10px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.link-row:hover { border-color: var(--accent); background: var(--accent-soft); }
+.ln-text { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+.ln-label { color: var(--bright); font-size: 1.05rem; font-weight: 500; }
+.link-row:hover .ln-label { color: var(--accent); }
+.ln-desc { color: var(--faint); font-size: 0.85rem; }
+.ln-arrow { color: var(--accent); font-size: 1.15rem; flex: none; transition: transform 0.15s ease; }
+.link-row:hover .ln-arrow { transform: translateX(3px); }
+
+.hero-social { margin: 0; color: var(--faint); font-size: 0.84rem; }
+.hero-social a { color: var(--muted); }
+.hero-social a:hover { color: var(--accent); }
+
 /* ── post list with cover thumbs ── */
 .posts { list-style: none; margin: 0; padding: 0; }
 .post-row {
