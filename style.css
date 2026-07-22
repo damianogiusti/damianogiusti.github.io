@@ -120,6 +120,13 @@ html[data-lang="it"] [data-l="en"] { display: none; }
   font-family: inherit; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.03em;
 }
 
+@media (max-width: 540px) {
+  .site-head { padding: 1.8rem 0 1.1rem; margin-bottom: 2.2rem; }
+  .site-nav { gap: 0.9rem; }
+  .head-left { gap: 0.6rem; }
+  .brand-name { display: none; }
+}
+
 /* ── intro / home bio (acts as the page header) ── */
 .home-bio {
   display: flex; align-items: center; gap: 1.5rem;

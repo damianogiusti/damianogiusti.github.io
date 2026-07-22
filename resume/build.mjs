@@ -121,7 +121,7 @@ const BACK = `<a class="back-btn" href="/" aria-label="Home"><svg viewBox="0 0 2
 const header = `<header class="site-head">
   <div class="head-left">
     ${BACK}
-    <a class="brand" href="/">${PICK} damiano giusti</a>
+    <a class="brand" href="/">${PICK}<span class="brand-name">damiano giusti</span></a>
   </div>
   <nav class="site-nav">
     <a href="/writing/">blog</a>
