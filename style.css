@@ -76,6 +76,14 @@ img { max-width: 100%; }
   padding: 2.4rem 0 1.4rem; margin-bottom: 3rem;
   border-bottom: 1px solid var(--rule);
 }
+.head-left { display: inline-flex; align-items: center; gap: 0.8rem; }
+.back-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 1.9rem; height: 1.9rem; border-radius: 6px;
+  border: 1px solid var(--rule); color: var(--muted); flex: none;
+}
+.back-btn:hover { color: var(--accent); border-color: var(--accent); }
+.back-btn svg { width: 15px; height: 15px; }
 .brand {
   display: inline-flex; align-items: center; gap: 0.55rem;
   color: var(--bright); font-size: 0.95rem; font-weight: 500;
@@ -102,6 +110,14 @@ img { max-width: 100%; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .toggle .moon { display: block; }
   :root:not([data-theme="light"]) .toggle .sun  { display: none; }
+}
+
+/* ── i18n (bilingual, toggled via data-lang on <html>) ── */
+html:not([data-lang="it"]) [data-l="it"] { display: none; }
+html[data-lang="it"] [data-l="en"] { display: none; }
+.lang-toggle {
+  width: auto; min-width: 1.9rem; padding: 0 0.55rem;
+  font-family: inherit; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.03em;
 }
 
 /* ── intro / home bio (acts as the page header) ── */

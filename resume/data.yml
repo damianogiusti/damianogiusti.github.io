@@ -73,7 +73,7 @@ experiences:
         data collection and sync, firmware upgrade, encrypted storage — and the clinical
         apps built on top of it. I also build the platform underneath the apps (shared KMP
         libraries, a cross-platform UI test framework, monorepo build tooling), and mentor
-        and review code across the team on both platforms.
+        and review code across the team on both platforms. I spoke at droidcon Italy 2022.
     - role: Mobile Lead Engineer
       time: 2016 - 2021
       company: MOLO17, Pordenone, Italy
@@ -102,58 +102,48 @@ projects:
       - title: "Empatica — EmbracePlus"
         timespan: 2021 – now
         tagline: |
-          EmbracePlus is Empatica's medical-grade smartwatch for continuous, clinical-quality
-          health monitoring. A single Android and Kotlin Multiplatform codebase ships as four
-          separately branded medical products, all backed by a shared device SDK. As a senior
-          engineer I own features end to end — from BLE and the data pipeline up to the Compose
-          UI — across Android and iOS, drive cross-platform architecture, and mentor and review
-          across the mobile team.
+          A single Android and Kotlin Multiplatform codebase that ships as four separately
+          branded medical apps on Android and iOS, backed by a shared device SDK. I own features
+          end to end — from BLE and the data pipeline to the Compose UI — drive the cross-platform
+          architecture, and review and mentor across the mobile team.
+        highlights: Kotlin, Kotlin Multiplatform, Jetpack Compose, Coroutines, Flow, Koin, Bluetooth LE, MVVM, Feature flags, DataDog, CI/CD, Instrumented & E2E testing, Material3, Location & alerting, Screenshot testing, ProGuard/R8, Maven publishing, Custom licensing
         sections:
 
           - name: Care
             tagline: |
-              The flagship EmbracePlus health-monitoring app: device onboarding and BLE pairing,
-              continuous background monitoring, health-data collection and sync, over-the-air
-              firmware upgrade, encrypted local storage, a health diary and daily tasks
-              (medications, questionnaires, functional tests), plus multidevice support so one
-              app drives several devices at once.
-            highlights: Kotlin, Kotlin Multiplatform, Jetpack Compose, Coroutines, Flow, Koin, Bluetooth LE
+              The flagship EmbracePlus app, used by participants in clinical trials. I build
+              features end to end: device onboarding and BLE pairing, background monitoring,
+              sync of raw sensor data and biomarkers, over-the-air firmware upgrade, encrypted
+              storage, a health diary with daily tasks, and multidevice support.
 
           - name: Care Lab
             tagline: |
-              The research build of the app, used to run clinical studies on EmbracePlus. I own
-              the flavor-specific behavior, resources and localization that separate research
-              from clinical, along with study-oriented configuration and per-build observability,
-              keeping one codebase serving very different regulatory and study contexts.
-            highlights: Kotlin, Koin, MVVM, Feature flags, DataDog, CI/CD, Instrumented & E2E testing
+              The build for researchers running studies on EmbracePlus. I own the flavor-specific
+              behavior, resources and localization that separate the research build from the
+              clinical one, plus study configuration and per-build observability — one codebase
+              serving very different contexts.
 
           - name: EpiMonitor
             tagline: |
-              Epilepsy monitoring built on EmbracePlus seizure detection, with real-time
-              caregiver alerting: when a seizure is detected the app notifies caregivers and can
-              share the patient's location. I built the seizure reporting experience — event
-              detail and report screens, review, notes and false-positive marking — and the
-              epilepsy onboarding flow.
-            highlights: Kotlin, Jetpack Compose, Material3, Coroutines, Flow, Location & alerting
+              Epilepsy monitoring built on EmbracePlus seizure detection. I built the
+              seizure-reporting experience — event detail and report screens, review, notes and
+              false-positive marking — and the epilepsy onboarding flow, with real-time caregiver
+              alerting and location sharing.
 
           - name: PKG Monitor
             tagline: |
-              Parkinson's disease monitoring that turns continuous sensor data into a clinical
-              diary. I built credentialless participant onboarding — login without personal
-              credentials, cloud-region selection, phone and Bluetooth compatibility checks — and
-              the PD-details experience on Android and iOS: tremor banded charts, sleep-graph
-              timelines, per-symptom severity, daily-summary donuts, weekly trends and an
-              AI-generated insights flow, all data-driven from the shared platform.
-            highlights: Kotlin, Kotlin Multiplatform, Jetpack Compose, Coroutines, Flow, Koin, Bluetooth LE, Screenshot testing
+              Parkinson's monitoring that turns continuous sensor data into a clinical diary. I
+              built credentialless participant onboarding and the PD-details experience on Android
+              and iOS: tremor banded charts, sleep-graph timelines, per-symptom severity,
+              daily-summary donuts, weekly trends and an AI-generated insights flow.
 
           - name: EmbracePlusSDK
             tagline: |
-              The public Android SDK that lets third-party apps integrate the EmbracePlus device:
-              Bluetooth discovery, bonding and connection management, a device manager, and
-              streaming of on-device health signals. Distributed as an obfuscated, versioned
-              artifact with a custom licensing scheme that gates SDK access per integrator. I
-              contributed to the BLE, data-pipeline and device-management layers it exposes.
-            highlights: Kotlin, Bluetooth LE, Coroutines, Flow, ProGuard/R8, Maven publishing, Custom licensing
+              The public Android SDK for integrating the EmbracePlus device into third-party apps:
+              Bluetooth discovery, bonding and connection management, a device manager and
+              streaming of raw sensor data and biomarkers. I contributed to the BLE, data-pipeline
+              and device-management layers, shipped as an obfuscated, versioned artifact with
+              per-integrator licensing.
 
       - title: MOLO17
         id: molo17

@@ -89,6 +89,8 @@ const md = new MarkdownIt({
 
 /* ── helpers ── */
 const esc = (s = '') => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+// bilingual inline text: renders both languages, one shown via [data-lang] + CSS.
+const bi = (en, it) => `<span data-l="en">${esc(en)}</span><span data-l="it">${esc(it)}</span>`;
 const slugifyCat = (c) => c.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const fmtDate = (d) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' });
 const isoDate = (d) => d.toISOString().slice(0, 10);
@@ -113,25 +115,31 @@ const TOGGLE = `<button class="toggle" id="toggle" aria-label="Toggle light/dark
   <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
   <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
 </button>`;
+const LANG = `<button class="toggle lang-toggle" id="lang" aria-label="Cambia lingua / Switch language">${bi('IT', 'EN')}</button>`;
 
-const header = () => `<header class="site-head">
-  <a class="brand" href="/">${PICK} damiano giusti</a>
+const BACK = `<a class="back-btn" href="/" aria-label="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></a>`;
+const header = (home = false) => `<header class="site-head">
+  <div class="head-left">
+    ${home ? '' : BACK}
+    <a class="brand" href="/">${PICK} damiano giusti</a>
+  </div>
   <nav class="site-nav">
-    <a href="/writing/">writing</a>
+    <a href="/writing/">blog</a>
     <a href="${SITE.resume}">résumé</a>
     ${TOGGLE}
+    ${LANG}
   </nav>
 </header>`;
 
 const footer = () => `<footer class="site-foot">
-  <span class="np">♪ now playing — <a href="${SITE.nowPlaying.url}">${esc(SITE.nowPlaying.track)}</a></span>
+  <span class="np">♪ ${bi('now playing', 'in ascolto')} — <a href="${SITE.nowPlaying.url}">${esc(SITE.nowPlaying.track)}</a></span>
   <div class="foot-row">
     <span>© ${new Date().getFullYear()} ${SITE.author}</span>
     <span><a href="${SITE.github}">github</a> · <a href="${SITE.linkedin}">linkedin</a> · <a href="${SITE.spotify}">spotify</a></span>
   </div>
 </footer>`;
 
-function page({ title, description, body, ogImage, ogImageDims, canonical, jsonLd, ogType = 'website', article }) {
+function page({ title, description, body, ogImage, ogImageDims, canonical, jsonLd, ogType = 'website', article, home = false }) {
   const desc = description || SITE.description;
   const [ogW, ogH] = (ogImageDims || '').split('x');
   return `<!doctype html>
@@ -161,12 +169,12 @@ ${article ? `<meta property="article:published_time" content="${article.publishe
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="/style.css">
 <link rel="alternate" type="application/atom+xml" title="${esc(SITE.title)} — feed" href="${SITE.url}/feed.xml">
-<script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;})();</script>
+<script>(function(){var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;var l=localStorage.getItem('lang');if(!l)l=(navigator.language||'en').toLowerCase().indexOf('it')===0?'it':'en';var r=document.documentElement;r.dataset.lang=l;r.lang=l;})();</script>
 ${renderLd(jsonLd)}
 </head>
 <body>
 <div class="wrap">
-${header()}
+${header(home)}
 ${body}
 ${footer()}
 </div>
@@ -176,6 +184,10 @@ document.getElementById('toggle').addEventListener('click',function(){
   if(!cur) cur=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
   var n=cur==='dark'?'light':'dark';
   r.dataset.theme=n; localStorage.setItem('theme',n);
+});
+document.getElementById('lang').addEventListener('click',function(){
+  var r=document.documentElement, cur=r.dataset.lang||'en', n=cur==='it'?'en':'it';
+  r.dataset.lang=n; r.lang=n; localStorage.setItem('lang',n);
 });
 </script>
 </body>
@@ -218,28 +230,31 @@ const postRow = (p) => `<li class="post-row">
 
 /* ── pages ── */
 function buildLanding() {
-  const bioPath = path.join(SRC, 'bio.md');
-  const bioHtml = fs.existsSync(bioPath) ? md.render(fs.readFileSync(bioPath, 'utf8')) : '';
+  const renderBio = (file) => {
+    const p = path.join(SRC, file);
+    return fs.existsSync(p) ? md.render(fs.readFileSync(p, 'utf8')) : '';
+  };
+  const bioHtml = `<div data-l="en">${renderBio('bio.md')}</div><div data-l="it">${renderBio('bio.it.md')}</div>`;
   const ICONS = {
     pen: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/>',
     file: '<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/>',
     music: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
   };
-  const linkRow = (href, label, desc, icon, ext) =>
-    `<a class="link-row"${ext ? ' target="_blank" rel="noopener"' : ''} href="${href}"><span class="ln-icon" aria-hidden="true"><svg viewBox="0 0 24 24">${ICONS[icon]}</svg></span><span class="ln-text"><span class="ln-label">${esc(label)}</span><span class="ln-desc">${esc(desc)}</span></span><span class="ln-arrow" aria-hidden="true">→</span></a>`;
+  const linkRow = (href, labelHtml, descHtml, icon, ext) =>
+    `<a class="link-row"${ext ? ' target="_blank" rel="noopener"' : ''} href="${href}"><span class="ln-icon" aria-hidden="true"><svg viewBox="0 0 24 24">${ICONS[icon]}</svg></span><span class="ln-text"><span class="ln-label">${labelHtml}</span><span class="ln-desc">${descHtml}</span></span><span class="ln-arrow" aria-hidden="true">→</span></a>`;
   const body = `<section class="lander">
 <div class="home-bio">
   <img class="bio-avatar" src="${avatar(320)}" alt="${SITE.author}" width="120" height="120">
   <div class="intro">${bioHtml}</div>
 </div>
 <nav class="links">
-  ${linkRow('/writing/', 'Writing', 'Notes on mobile & Kotlin', 'pen')}
-  ${linkRow(SITE.resume, 'Résumé', 'What I’ve built', 'file')}
-  ${linkRow('https://www.panicstation.it', 'Panic Station', 'My band — I play guitar', 'music', true)}
+  ${linkRow('/writing/', 'Blog', bi('Notes on mobile & Kotlin', 'Note su mobile & Kotlin'), 'pen')}
+  ${linkRow(SITE.resume, 'Résumé', bi('My experience', 'La mia esperienza'), 'file')}
+  ${linkRow('https://www.panicstation.it', bi('Panic Station', 'Panic Station'), bi('My band — I play guitar', 'La mia band — suono la chitarra'), 'music', true)}
 </nav>
 <p class="hero-social"><a href="${SITE.github}">github</a> · <a href="${SITE.linkedin}">linkedin</a> · <a href="${SITE.spotify}">spotify</a></p>
 </section>`;
-  writeFile('index.html', page({ title: `${SITE.title} — Senior Mobile Engineer`, body, canonical: '/', ogImage: '/assets/images/og-card.png', ogImageDims: '1200x630', jsonLd: [websiteLd(), personLd()] }));
+  writeFile('index.html', page({ title: `${SITE.title} — Senior Mobile Engineer`, body, canonical: '/', ogImage: '/assets/images/og-card.png', ogImageDims: '1200x630', jsonLd: [websiteLd(), personLd()], home: true }));
 }
 
 function buildWriting(posts) {

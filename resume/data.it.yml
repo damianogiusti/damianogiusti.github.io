@@ -1,0 +1,300 @@
+#
+# Be aware that even a small syntax error here can lead to failures in output.
+#
+
+sidebar:
+    about: False # set to False or comment line if you want to remove the "how to use?" in the sidebar
+    education: False # set to False if you want education in main section instead of in sidebar
+
+    # Profile information
+    name: Damiano Giusti
+    tagline: Senior Mobile Engineer
+    avatar: https://www.gravatar.com/avatar/b7800707f9d6d9e1c053512554a5512f?s=500&d=mm&r=x
+
+    # Sidebar links
+    email:
+    phone:
+    website: #do not add http://
+    linkedin: damianogiusti
+    github: damianogiusti
+    telegram: # add your nickname without '@' sign
+    gitlab:
+    bitbucket:
+    twitter:
+    stack-overflow: # Number/Username, e.g. 123456/alandoe
+    codewars:
+    goodreads: # Number-Username, e.g. 123456-alandoe
+    spotify: damiano.giusti
+
+    languages:
+      # - idiom: English
+      #   level: Professional
+
+    interests:
+      # - item: I play the guitar
+      #   link: meh
+
+      # - item: I write code
+      #   link:
+
+career-profile:
+    title: Chi sono
+    summary: |
+      Sono un mobile engineer senior con oltre dieci anni di esperienza nello sviluppo di app
+      Android — e, più di recente, di soluzioni cross-platform Android e iOS con Kotlin
+      Multiplatform. Oggi lavoro su wearable di livello medicale in Empatica, curando le
+      funzionalità end to end, dal BLE e dalla data pipeline fino alla UI, e costruendo la
+      piattaforma condivisa e il tooling su cui le app si appoggiano. Tengo profondamente
+      alla Clean Architecture, al testing e a quei piccoli dettagli che rendono un'app veloce
+      e affidabile — e mi piace affrontare problemi difficili e aiutare le persone intorno a me
+      a crescere mentre lo faccio.
+
+education:
+    - degree: Tecnico Superiore per lo sviluppo di App Mobile
+      university: I.T.S. Kennedy, Pordenone, Italy
+      time: 2015 - 2017
+      details: |
+        Diploma di Tecnico Superiore (ITS) conseguito con votazione 100/100
+    - degree: Perito Tecnico Informatico
+      university: ITIS J.F. Kennedy, Pordenone, Italy
+      time: 2009 - 2014
+      details: |
+        Diploma di scuola superiore conseguito con votazione finale 87/100
+experiences:
+    - role: Senior Mobile Engineer
+      time: 2021 - oggi
+      company: Empatica, Milano (full-remote), Italy
+      details: |
+        Mobile engineer sulla piattaforma EmbracePlus di Empatica — uno smartwatch di livello
+        medicale per il monitoraggio della salute continuo e di qualità clinica. In oltre 5 anni
+        sono passato dallo sviluppo di funzionalità Android al cross-platform (Android + iOS) e
+        alla mobile platform engineering. Uso quotidiano di Kotlin, Jetpack Compose,
+        Coroutines/Flow, Koin e Kotlin Multiplatform, condividendo logica di business, dati e UI
+        tra le due piattaforme. Il mio lavoro copre l'intero stack di un prodotto basato su
+        sensori — pairing BLE e multidevice, raccolta e sincronizzazione dati on-device,
+        aggiornamento firmware, storage cifrato — e le app cliniche costruite su di esso.
+        Realizzo inoltre la piattaforma che sta sotto le app (librerie KMP condivise, un
+        framework di UI test cross-platform, tooling di build monorepo) e faccio mentoring e
+        code review nel team su entrambe le piattaforme. Sono intervenuto come speaker al
+        droidcon Italy 2022.
+    - role: Mobile Lead Engineer
+      time: 2016 - 2021
+      company: MOLO17, Pordenone, Italy
+      details: |
+        Android e iOS Engineer, con focus principale sulla piattaforma Android.
+        Uso quotidiano di Kotlin, Jetpack, Coroutines, Flow, MVVM, MVP, RxJava, Junit, Espresso.
+        Lavoro ogni giorno in un team remoto, in cui supporto attivamente i colleghi
+        e mi occupo di code review. In particolare, ho introdotto il team alla Clean Architecture,
+        e nel 2019 anche al mondo di Kotlin Multiplatform.
+        Scrivo spesso articoli sul blog aziendale su Kotlin e temi di ingegneria del software.
+        Sono intervenuto come speaker a:
+          - Milan Kotlin Community Conf 2018;
+          - M17 Meetup at Mikamai LinkMe in Milan, 2018;
+          - Workshop su Kotlin al TEDx di Castelfranco Veneto (VE).
+
+    - role: Java EE Developer
+      time: 2015
+      company: Magia3 Srl, Pordenone, Italy
+      details: |
+        Sviluppatore addetto alla manutenzione di un software ERP in Java basato su infrastruttura Oracle.
+
+projects:
+    title: Portfolio
+    intro:
+    assignments:
+      - title: "Empatica — EmbracePlus"
+        timespan: 2021 – oggi
+        tagline: |
+          Un unico codebase Android e Kotlin Multiplatform distribuito come quattro app medicali
+          con brand distinti su Android e iOS, basate su un device SDK condiviso. Curo le
+          funzionalità end to end — dal BLE e dalla data pipeline fino alla UI in Compose — guido
+          l'architettura cross-platform e faccio code review e mentoring nel mobile team.
+        highlights: Kotlin, Kotlin Multiplatform, Jetpack Compose, Coroutines, Flow, Koin, Bluetooth LE, MVVM, Feature flags, DataDog, CI/CD, Instrumented & E2E testing, Material3, Location & alerting, Screenshot testing, ProGuard/R8, Maven publishing, Custom licensing
+        sections:
+
+          - name: Care
+            tagline: |
+              L'app di punta di EmbracePlus, usata dai partecipanti agli studi clinici. Costruisco
+              funzionalità end to end: onboarding del dispositivo e pairing BLE, monitoraggio in
+              background, sincronizzazione dei raw data dei sensori e dei biomarker, aggiornamento
+              firmware over-the-air, storage cifrato, un diario della salute con task quotidiani e
+              il supporto multidevice.
+
+          - name: Care Lab
+            tagline: |
+              La build per i ricercatori che conducono studi su EmbracePlus. Curo il comportamento,
+              le risorse e la localizzazione specifici del flavor che separano la build di ricerca
+              da quella clinica, più la configurazione degli studi e l'observability per build — un
+              unico codebase al servizio di contesti molto diversi.
+
+          - name: EpiMonitor
+            tagline: |
+              Monitoraggio dell'epilessia costruito sul rilevamento delle crisi di EmbracePlus. Ho
+              realizzato l'esperienza di reporting delle crisi — schermate di dettaglio e report
+              dell'evento, revisione, note e marcatura dei falsi positivi — e il flusso di
+              onboarding per l'epilessia, con allerta in tempo reale ai caregiver e condivisione
+              della posizione.
+
+          - name: PKG Monitor
+            tagline: |
+              Monitoraggio del Parkinson che trasforma il flusso continuo di dati dei sensori in
+              un diario clinico. Ho realizzato l'onboarding dei partecipanti senza credenziali e
+              l'esperienza di PD-details su Android e iOS: grafici a bande per il tremore, timeline
+              del grafico del sonno, severità per sintomo, donut di riepilogo giornaliero, trend
+              settimanali e un flusso di insight generati con l'AI.
+
+          - name: EmbracePlusSDK
+            tagline: |
+              L'SDK Android pubblico per integrare il dispositivo EmbracePlus in app di terze
+              parti: discovery Bluetooth, gestione di bonding e connessione, un device manager e lo
+              streaming dei raw data dei sensori e dei biomarker on-device. Ho contribuito ai layer
+              di BLE, data pipeline e gestione del dispositivo, distribuito come artefatto offuscato
+              e versionato con licensing per integratore.
+
+      - title: MOLO17
+        id: molo17
+        timespan: 2016 – 2021
+        featured: 3
+        moreHref: molo17.html
+        moreLabel: Mostra tutti i progetti MOLO17
+        tagline: |
+          Come Mobile Lead Engineer ho realizzato app Android e iOS negli ambiti healthcare,
+          fintech, retail ed enterprise, ho introdotto il team alla Clean Architecture e a
+          Kotlin Multiplatform e ho fatto mentoring ai colleghi. Una selezione dei lavori:
+        sections:
+
+          - name: App sanitaria e per emergenze mediche (JNI + defibrillatori)
+            when: 2020
+            tagline: |
+              App per tablet offline-first usata dagli operatori medici per raccogliere sul campo i
+              dati dei pazienti soccorsi, distribuita su ambulanze, elicotteri e automediche delle
+              A.S.L. italiane. Ho contribuito alla progettazione e allo sviluppo, ho collegato
+              l'app a due defibrillatori esterni automatici tramite la JNI e ho scritto un
+              annotation processor per una logica di navigazione custom.
+            highlights: JNI, C, Annotation processing, Kotlin, MVVM, Coroutines, Dagger, Couchbase Lite
+
+          - name: App fintech (Kotlin Multiplatform)
+            when: 2019 – 2020
+            tagline: |
+              App pubblica Android e iOS per il monitoraggio di prodotti finanziari e l'invio di
+              notifiche con idee di investimento. Costruita con Kotlin Multiplatform e Clean
+              Architecture per condividere la logica di business e dei dati tra le due piattaforme.
+            highlights: Kotlin Multiplatform, MVVM, RxJava, RxSwift
+
+          - name: TwinForce — App iOS di workforce management
+            when: 2019 – 2020
+            tagline: |
+              App iPad B2B white-label che dà agli operatori di fabbrica l'accesso sul campo al
+              software ERP. Ho realizzato l'intera UI da zero, mantenendola personalizzabile per
+              cliente, e ho proposto il modello di branching Git white-label tuttora usato tra i
+              clienti.
+            highlights: iOS, Swift, RxSwift, Swinject, Moya, Couchbase Lite
+
+          - name: FashTime — app social
+            when: 2019 – 2020
+            tagline: |
+              Nuovo concept di social network in cui gli utenti si scambiano tempo invece di like.
+              Ho realizzato la versione Android a partire dall'app iOS esistente, lavorando con il
+              team di FashTime.
+            highlights: Kotlin, MVVM, RxJava, Dagger, Jetpack Navigation, Glide, libjpegturbo
+
+          - name: App retail & server HTTP per le casse
+            when: 2019 – 2020
+            tagline: |
+              App Android enterprise su Zebra TC8000 che aiuta il personale retail a categorizzare
+              gli articoli ed emettere scontrini. I codici a barre scansionati vengono inviati a un
+              server HTTP REST che ho realizzato e che gira sui registratori di cassa.
+            highlights: Kotlin, RxJava, Dagger, Retrofit, Jetpack Navigation, Glide
+
+          - name: GlueSync
+            when: 2019 – 2020
+            tagline: |
+              Daemon Kotlin/JVM dockerizzato che migra un set selezionato di tabelle tra un
+              database relazionale e uno store NoSQL in entrambe le direzioni. Configurabile, con un
+              motore di sincronizzazione vendor-agnostic e plugin vendor-specific per la
+              compatibilità.
+            highlights: Kotlin, Coroutines, Docker Compose, AWS EC2, SQL Server, Couchbase Server, Oracle
+
+          - name: CRM fintech & chat aziendale
+            when: 2017 – 2018
+            tagline: |
+              App Android enterprise che riassume i KPI finanziari dei clienti, ne traccia i
+              progressi e gestisce i prodotti proposti. Ho implementato una chat con un protocollo
+              custom su WebSocket.
+            highlights: Kotlin, MVP, RxJava, Dagger, Retrofit, Picasso
+
+          - name: App di messaggistica per gli Emirati Arabi Uniti
+            when: 2016 – 2017
+            tagline: |
+              App Android di messaggistica per un'azienda degli Emirati Arabi Uniti — testo, media
+              e chiamate VoIP. Costruita con un team internazionale (Australia, Ungheria, Regno
+              Unito); ho trascorso tre settimane on-site a Dubai.
+            highlights: Java, MVC, RxJava, OkHttp, Picasso
+
+# publications:
+#     title: Publications
+#     intro: |
+#       You can list your publications in this section. Lorem ipsum dolor sit
+#       amet, consectetur adipiscing elit. Vestibulum et ligula in nunc
+#       bibendum fringilla a eu lectus.
+#     papers:
+#       - title: The Art of Computer Programming
+#         link: "#"
+#         authors: Donald E. Knuth
+#         conference: Addison-Wesley, 1968
+
+#       - title: "Genetic Programming III: Darwinian Invention &amp; Problem Solving"
+#         link: "#"
+#         authors: Koza, J.R., Andre, D., Bennett, F.H., Keane, M.A.
+#         conference: "Morgan Kaufmann Publishers Inc., San Francisco, CA, USA, 1st edn. (1999)"
+
+#       - title: A syntax directed compiler for Algol 60
+#         link: "#"
+#         authors: Edgar T. Irons
+#         conference: "Comm. ACM 4 (1961), 51–55"
+
+skills:
+    title: I miei punti di forza
+
+    toolset:
+      - name: Sviluppo Android
+        level: 95%
+
+      - name: Kotlin Multiplatform
+        level: 95%
+
+      - name: Jetpack Compose
+        level: 90%
+
+      - name: Bluetooth LE
+        level: 85%
+
+      - name: Sviluppo iOS
+        level: 75%
+
+      - name: Swift
+        level: 80%
+
+      - name: Testing
+        level: 85%
+
+      - name: Design pattern
+        level: 90%
+
+      - name: ReactJS
+        level: 60%
+
+      - name: TypeScript
+        level: 67%
+
+      - name: Stack cloud Firebase
+        level: 80%
+
+      - name: Docker
+        level: 70%
+
+      - name: CI/CD
+        level: 80%
+
+footer: >
+    Realizzato con <i class="fas fa-heart"></i> usando Jekyll e <a href="https://github.com/sharu725/online-cv" target="_blank" rel="nofollow">online-cv</a>

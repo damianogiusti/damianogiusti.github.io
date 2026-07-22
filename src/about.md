@@ -41,6 +41,10 @@ KotlinCommunityConf**, the first italian conference dedicated to **Kotlin**, in 
 
 Here's the list of the events for you, with some references where available.
 
+#### [2022] [ENG] droidcon Italy 2022
+I spoke at **droidcon Italy 2022**, the Italian edition of the international conference for the
+Android developer community.
+
 #### [2018] [ENG] Kotlin+RxJava: Android goes SOLID! – [Video](https://vimeo.com/279206868)
 First talk of mine I held at **Milan KotlinCommunityConf 2018**. Here I explain how 
 I used **Kotlin** together with **RxJava** in a project at MOLO17, applying **Clean Architecture**.  
