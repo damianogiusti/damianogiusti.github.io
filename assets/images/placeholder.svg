@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" width="360" height="220" role="img" aria-label="Immagine persa nei meandri di internet">
+  <style>
+    .bg   { fill: #f0f0f0; }
+    .brd  { stroke: #c9c9c9; }
+    .swirl{ stroke: #9aa0a6; }
+    .pic  { stroke: #8a8a8a; }
+    .txt  { fill: #7a7a7a; }
+    @media (prefers-color-scheme: dark) {
+      .bg   { fill: #1e1e1e; }
+      .brd  { stroke: #3a3a3a; }
+      .swirl{ stroke: #6b7075; }
+      .pic  { stroke: #7c7c7c; }
+      .txt  { fill: #8c8c8c; }
+    }
+  </style>
+  <rect class="bg" width="360" height="220" rx="10"/>
+  <rect class="brd" x="1" y="1" width="358" height="218" rx="10" fill="none" stroke-width="2" stroke-dasharray="5 6"/>
+
+  <!-- whirlpool: the meandri di internet -->
+  <path class="swirl" fill="none" stroke-width="4" stroke-linecap="round"
+        d="M 235 92
+           A51 51 0 0 1 132 92
+           A44 44 0 0 1 220 92
+           A36 36 0 0 1 148 92
+           A28 28 0 0 1 204 92
+           A20 20 0 0 1 164 92
+           A12 12 0 0 1 188 92
+           A6 6 0 0 1 180 92"/>
+
+  <!-- little photo being swallowed -->
+  <g class="pic" fill="none" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"
+     transform="translate(246 58) rotate(22)">
+    <rect x="-22" y="-16" width="44" height="34" rx="4"/>
+    <circle cx="-9" cy="-5" r="4"/>
+    <path d="M-19 15 L-4 1 L5 9 L13 3 L19 15 Z"/>
+  </g>
+
+  <text class="txt" x="180" y="176" font-family="monospace" font-size="15" text-anchor="middle">image lost in the</text>
+  <text class="txt" x="180" y="196" font-family="monospace" font-size="15" text-anchor="middle">depths of the internet…</text>
+</svg>
